@@ -1,4 +1,3 @@
-var express = require('express');
 const { User } = require('../models/index')
 const bcrypt = require('bcrypt')
 
