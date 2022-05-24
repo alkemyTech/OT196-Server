@@ -1,11 +1,12 @@
 const sgMail = require('@sendgrid/mail')
 const formatMessage = require('format-message')
+formatMessage.setup({missingTranslation: 'ignore'})
 
 // Set API KEY for SENDGRID 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Set EMAIL SENDER validated on SENDGRID
-const emailSender = "facugastonbarral@gmail.com"
+const emailSender = ""
 
 const emailTemplates = {
     ["default"]: {
@@ -33,7 +34,6 @@ exports.sendEmail = async function (receiverEmail, receiverName, type){
         html: html,
     }
     sgMail.send(msg)
-    .catch((e) => {
-       console.error(e)
-    })
+    .then(()=>{console.log(`Email sent to ${receiverEmail} from ${emailSender}`)})
+    .catch((e) => {console.error(e)})
 }
