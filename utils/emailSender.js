@@ -22,11 +22,10 @@ const emailTemplates = {
     },
 }
 
-exports.sendEmail = async function (receiverEmail, receiverUser, type){
-    
-    var template = (type && emailTemplates[type.toLowerCase()]) || emailTemplates["default"]
-    var subject = formatMessage(template.subject, { name: receiverUser })
-    var html = formatMessage(template.html, { name: receiverUser })
+exports.sendEmail = async function (receiverEmail, receiverName, type){
+    const template = (type && emailTemplates[type.toLowerCase()]) || emailTemplates["default"]
+    const subject = formatMessage(template.subject, { name: receiverName })
+    const html = formatMessage(template.html, { name: receiverName })
     const msg = {
         to: receiverEmail,
         from: emailSender,
@@ -37,5 +36,4 @@ exports.sendEmail = async function (receiverEmail, receiverUser, type){
     .catch((e) => {
        console.error(e)
     })
-
 }
