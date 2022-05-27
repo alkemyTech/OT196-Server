@@ -20,6 +20,18 @@ async (req, res) => {
     password: passwordHash
   })
   .then(user =>  res.json(user))
-})
+});
+
+router.delete('/user/:email', async (req, res)=> {
+  const { email } = req.params 
+  try {
+    await User.destroy({
+      where: { email: email }
+    })
+    res.send('The user has been deleted correctly')
+  } catch (error) {
+    console.log(error)
+  }
+});
 
 module.exports = router;
