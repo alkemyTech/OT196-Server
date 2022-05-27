@@ -2,7 +2,8 @@ const JWT_SECRET = process.env.DB_TOKEN
 const jwt = require('jsonwebtoken');
 const adminRoles = [1]
 
-exports.roleVerify = async function(req,res,next){
+exports.adminValidation = async function(req,res,next){
+    if (!req.headers.authorization) {return res.status(401).end('Invalid token.')}
     const reqToken = req.headers.authorization.split(' ')[1];
     const token = jwt.verify(reqToken, JWT_SECRET, function (err, suc) {
         if (err) {return res.status(401).end('Invalid token.');}
