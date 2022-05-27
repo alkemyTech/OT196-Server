@@ -22,16 +22,21 @@ async (req, res) => {
   .then(user =>  res.json(user))
 });
 
-router.delete('/user/:email', async (req, res)=> {
-  const { email } = req.params 
+router.delete('/user/:id', async (req, res)=> {
+  const { id } = req.params 
   try {
     await User.destroy({
-      where: { email: email }
+      where: { id }
     })
     res.send('The user has been deleted correctly')
   } catch (error) {
     console.log(error)
   }
 });
+
+router.get('/getall', async (req, res)=> {
+  let users = await User.findAll()  
+  res.send(users)
+})
 
 module.exports = router;
