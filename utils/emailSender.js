@@ -10,8 +10,8 @@ const emailSender = ""
 
 const emailTemplates = {
     ["default"]: {
-        subject: '{name} - ONG Somos Mas',
-        html: '<h2>Hola, {name}</h2></br> Esto es un texto de prueba.</br> Si tienes alguna duda contacta a mail@example.com',
+        subject: '{subject} - ONG Somos Mas',
+        html: '<h2>Hola, {name}</h2></br> {text}',
     },
     ["register"]: {
         subject: '{name} - Tu cuenta ha sido creada! - ONG Somos Mas',
@@ -20,20 +20,20 @@ const emailTemplates = {
     ["contact"]: {
         subject: '{name} - Consulta recibida - ONG Somos Mas',
         html: '<h2>Hola, {name}</h2></br> Hemos recibido tu consulta, te responderemos a la brevedad!',
-    },
+    }
 }
 
-exports.sendEmail = async function (receiverEmail, receiverName, type){
+exports.sendEmail = async function (mailData, type){
     const template = (type && emailTemplates[type.toLowerCase()]) || emailTemplates["default"]
-    const subject = formatMessage(template.subject, { name: receiverName })
-    const html = formatMessage(template.html, { name: receiverName })
+    const subject = formatMessage(template.subject, { name: mailData.name, subject: mailData.subject  })
+    const html = formatMessage(template.html, { name: mailData.name, text: mailData.text })
     const msg = {
-        to: receiverEmail,
+        to: mailData.email,
         from: emailSender,
         subject: subject,
         html: html,
     }
     sgMail.send(msg)
-    .then(()=>{console.log(`Email sent to ${receiverEmail} from ${emailSender}`)})
+    .then(()=>{console.log(`Email sent to ${mailData.email} from ${emailSender}`)})
     .catch((e) => {console.error(e)})
 }
