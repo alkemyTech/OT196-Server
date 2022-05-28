@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     type: {type: DataTypes.STRING, validate:{isIn: [['news', 'event', 'other']]}}
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'Entry',
     tableName: 'Entries'
   });
