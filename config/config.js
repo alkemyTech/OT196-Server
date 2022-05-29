@@ -7,6 +7,7 @@ module.exports = {
         "database":  process.env.DB_NAME,
         "host": process.env.DB_HOST,
         "port": process.env.DB_PORT,
+        "secretToken": process.env.DB_TOKEN,
         "dialect": "mysql"
     },
     "test": {
@@ -14,6 +15,7 @@ module.exports = {
         "password": process.env.DB_PASSWORD,
         "database": process.env.DB_NAME,
         "host": process.env.DB_HOST,
+        "secretToken": process.env.DB_TOKEN,
         "dialect": "mysql"
     },
     "production": {
@@ -21,6 +23,7 @@ module.exports = {
         "password": process.env.DB_PASSWORD,
         "database": process.env.DB_NAME,
         "host": process.env.DB_HOST,
+        "secretToken": process.env.DB_TOKEN,
         "dialect": "mysql"
     }
 }
