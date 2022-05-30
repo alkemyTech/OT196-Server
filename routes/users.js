@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/auth/me', function(req, res) {
   let token = req.header.token;
-  user.find({ token: token }, function(err, userMe) {
+  User.find({ token: token }, function(err, userMe) {
       if (err) {
           return res.json({
               success: false,
