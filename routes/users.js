@@ -4,11 +4,14 @@ var bcrypt = require("bcrypt");
 const validateCreate = require("../controllers/userValidator");
 const db = require("../models/index");
 
+// middleware to verify if is admin
+const { adminValidation } = require("../middlewares/validators/userValidators");
+
 // Add User's Model
 const { User } = db;
 
 /* GET users listing. */
-router.get("/", async (req, res, next) => {
+router.get("/", adminValidation, async (req, res, next) => {
   // res.send('respond with a resource');
   try {
     // check if is admin
