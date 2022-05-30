@@ -12,20 +12,10 @@ const { User } = db;
 
 /* GET users listing. */
 router.get("/", adminValidation, async (req, res, next) => {
-  // res.send('respond with a resource');
   try {
-    // check if is admin
-    // roleVerify()
     // Get data from DB
     const allUsers = await User.findAll({
-      attributes: [
-        "firstName",
-        "lastName",
-        "email",
-        "image",
-        "password",
-        "roleId",
-      ],
+      attributes: ["firstName", "lastName", "email", "image", "roleId"],
     });
 
     res.json(allUsers);
