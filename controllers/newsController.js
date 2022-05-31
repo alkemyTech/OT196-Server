@@ -3,6 +3,9 @@ const news = async function (req, res) {
     const idParams = req.params.id;
     const { name, content, image, type } = req.body;
 
+    // VER AWAIT
+    //  const newUpdate = await News.findOne({ where: { title: idParams } }); 
+    const newUpdate = News.findOne({ where: { title: idParams } });
 
     if (newUpdate == null) {
         return res.json({
@@ -19,9 +22,9 @@ const news = async function (req, res) {
         },
 
             { returning: true, where: { id: idParams } })
-        res.status(200).send(`La noticia Nº${id} fue modificada`);    
+        res.status(200).send(`La noticia Nº${id} fue modificada`);
     }
 
 };
 
-export default news;
+module.exports = news;

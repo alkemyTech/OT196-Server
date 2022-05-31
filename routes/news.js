@@ -1,11 +1,20 @@
 var express = require('express');
 var router = express.Router();
-const db = require ('../models/index');
-const { Entry } = db;
-// const Newscontroller = require('../controllers/newsController')
-// const Newsvalidator = require('../middlewares/validators/newsValidator');
+const db = require('../models/index');
 
-router.put('/:id');
+// Add News
+const { Entry } = db;
+const Newscontroller = require('../controllers/newsController')
+
+
+/* GET news for testing. */
+router.get('/', function (req, res, next) {
+    res.send('respond with a News');
+});
+
+/* Update news */
+
+router.put('/:id', Newscontroller);
 
 module.exports = router;
 
