@@ -1,30 +1,32 @@
-const news = async function (req, res) {
+const db = require("../models/index");
+const { Entry } = db;
+
+const Newscontroller = async function (req, res) {
     // Save id from params 
-    const idParams = req.params.id;
+    const { idNews } = req.params;
+    // Req.Body for updates
     const { name, content, image, type } = req.body;
+    // Find de element to update by primary Key
+    const newUpdate = await Entry.findByPk(idNews);
 
-    // VER AWAIT
-    //  const newUpdate = await News.findOne({ where: { title: idParams } }); 
-    const newUpdate = News.findOne({ where: { title: idParams } });
-
-    if (newUpdate == null) {
-        return res.json({
+    // Validate if element exists
+    if (newUpdate === null) {
+        return res.status(404).json({
             success: false,
-            msj: 'No se encontró ninguna noticia',
-            err
+            msj: 'No se encontró ninguna noticia',       
         });
     } else {
-        const updatedNews = await news.update({
+        const updatedNews = await Entry.update({
             name,
             content,
             image,
             type
         },
-
-            { returning: true, where: { id: idParams } })
-        res.status(200).send(`La noticia Nº${id} fue modificada`);
+        // Returning for return the object
+        { returning: true, where: { id: idNews } })
+        res.status(200).send(`La noticia Nº${idNews} fue modificada. Actualizado con: name: ${name} content: ${content} image: ${image} type: ${type}`);
     }
 
-};
+}
 
-module.exports = news;
+module.exports = Newscontroller;

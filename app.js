@@ -11,7 +11,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const testimonialsRouter = require("./routes/testimonials");
-const newsRouter = require("./routes/news");
+
 
 const app = express();
 app.use(cors());
