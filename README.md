@@ -26,4 +26,4 @@ npx sequelize-cli db:seed:all
 ``` bash
 npm start
 ```
-=
+=asdasd
