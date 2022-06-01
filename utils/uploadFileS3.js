@@ -43,6 +43,9 @@ const uploadFile = (fileName) => {
   });
 };
 
+// Upload example: uncomment the next line if you want to try it and put the image you want to test as a parameter.
+// uploadFile("img.jpg")
+
 // // List objects in the bucket
 // var paramsList = {
 //   Bucket: process.env.AWS_BUCKET_NAME,
