@@ -9,18 +9,19 @@ router.get('/', async (req, res, next) => {
         const allNews = await Entry.findAll(
             { 
                 attributes:[
+                    'id',
                     'name',
                     'image',
-                    'createdAt' 
+                    'createdAt'
                 ],
                 where:{ 
                     type: 'news'
                 }
             }
         )
-        res.json(allNews)
+        res.status(200).json(allNews)
     } catch (err) {
-        res.error(err.status||403)
+        res.status(500).json({success: false, error: err.message})
     }
 })
 
