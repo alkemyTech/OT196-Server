@@ -1,4 +1,4 @@
-const { Activity } = db;
+const { Activity } = require('../models/index')
 
 exports.updateActivity = async function(req, res){
     const { id } = req.params
