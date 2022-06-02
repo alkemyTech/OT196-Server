@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.STRING(2500),
       },
       image: {
-        type: Sequelize.TEXT('long')	
+        type: Sequelize.STRING
       },
       categoryId: {
         type: Sequelize.INTEGER
