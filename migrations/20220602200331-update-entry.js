@@ -12,7 +12,7 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.transaction(t => {
       return Promise.all([
-        queryInterface.removeColumn('Entries', 'image', {type: Sequelize.STRING}, { transaction: t }),
+        queryInterface.changeColumn('Entries', 'image', {type: Sequelize.STRING}, { transaction: t }),
       ]);
     });
   }
