@@ -15,3 +15,16 @@ exports.validateLogin = [
     next();
   },
 ];
+exports.validateContact = [
+  check('email')
+    .normalizeEmail()
+    .isEmail(),
+  check('name')
+    .notEmpty()
+    .bail(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(422).json({ok: false, message: "Incorrect data."});
+    next();
+  },
+];
