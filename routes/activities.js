@@ -5,6 +5,6 @@ const { updateActivity } = require("../controllers/activitiesController");
 const { adminValidation } = require('../middlewares/validators/userValidators');
 const { validateActivity } = require("../middlewares/validators/formsValidator")
 
-router.put('/:id', adminValidation, updateActivity)
+router.put('/:id', validateActivity, adminValidation, updateActivity)
 
 module.exports = router;
