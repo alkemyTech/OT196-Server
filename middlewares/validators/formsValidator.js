@@ -15,3 +15,21 @@ exports.validateLogin = [
     next();
   },
 ];
+
+exports.validateActivity = [
+  check('name')
+    .notEmpty()
+    .bail(),
+    check('image')
+    .notEmpty()
+    .custom((value) => isBase64Image(value))
+    .bail(),
+    check('content').isLength({ max: 2500 })
+    .notEmpty()
+    .bail(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(422).json({ok: false, message: "Incorrect data."});
+    next();
+  },
+];
