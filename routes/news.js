@@ -3,6 +3,7 @@ var router = express.Router();
 const { createNews } = require('../controllers/newsController')
 const { validateNewsPost } = require("../middlewares/validators/formsValidator")
 const { adminValidation } = require("../middlewares/validators/userValidators")
+
 const db = require("../models/index");
 const { Entry } = db;
 
@@ -18,19 +19,38 @@ router.get('/', async (req, res, next) => {
         const allNews = await Entry.findAll(
             { 
                 attributes:[
+                    'id',
                     'name',
                     'image',
-                    'createdAt' 
+                    'createdAt'
                 ],
                 where:{ 
                     type: 'news'
                 }
             }
         )
-        res.json(allNews)
+        res.status(200).json(allNews)
     } catch (err) {
-        res.error(err.status||403)
+        res.status(500).json({success: false, error: err.message})
     }
 })
+
+// GET NEW BY ID 
+router.get('/:id', async (req, res)=> {
+    const { id } = req.params;
+    try {
+    const myNew = await Entry.findOne({
+        where: { 
+            type: 'news', 
+            id: id 
+        }
+    })
+    res.send(myNew)
+    } catch (error) {
+        res.status(404).send(error)
+    }
+    
+})
+
 
 module.exports = router;

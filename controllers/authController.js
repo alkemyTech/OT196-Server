@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 
 exports.login = async function( req, res ){
     var {email, password} = req.body
-    
+    console.log(req.body)
     // Check if user exists
     const userExist = await User.findOne({ where: { email: email } });
     if (!userExist) return res.status(404).send({ok: false})
