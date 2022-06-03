@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
 /************** START JWT LOGIC **************/
 
 // GENERATE TOKEN with user information and respond with the token
-router.post("/auth/login", (req, res) => { // test route
+router.post("/jwt/auth/login", (req, res) => { // test route //ESTA RUTA SE PISA
   // User example data with req.body
   const { id, name, lastName, email, password } = req.body;
   const user = {
