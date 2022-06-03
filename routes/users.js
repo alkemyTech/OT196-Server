@@ -50,8 +50,23 @@ router.post("/auth/register", validateCreate, async (req, res) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
-    password: passwordHash,
-  }).then((user) => res.json(user));
+    password: passwordHash
+  })
+  .then(user =>  res.json(user))
 });
+
+router.delete('/user/:id', async (req, res)=> {
+  const { id } = req.params 
+  try {
+    await User.destroy({
+      where: { id },       
+    })
+    res.send('The user has been deleted correctly')
+  } catch (error) {
+    console.log(error)
+  }
+});
+
+
 
 module.exports = router;

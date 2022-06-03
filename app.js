@@ -11,6 +11,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const testimonialsRouter = require("./routes/testimonials");
+const news = require('./routes/news');
 
 
 const app = express();
@@ -47,5 +48,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+console.log('server ready on port 3000')
 
 module.exports = app;
