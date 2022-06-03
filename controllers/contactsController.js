@@ -10,10 +10,12 @@ exports.createContact = async function(req, res){
             phone: phone || "",
             message: message || ""
         })
+
+        // Response on success request
+        if (newContact) return res.status(200).send({ok: true, message: 'Contact created.', newContact: newContact})
     }
-    catch{
-        if (!newContact) return res.status(404).send({ok: false, message: 'Error creating contact.'})
+    catch(e){
+        // Response with error on fail request
+        return res.status(400).send({ok: false, message: 'Error creating contact.', error: e.parent?.sqlMessage || e.name})
     }
-    // Response on success request
-    if (newContact) return res.status(200).send({ok: true, message: 'Contact created.', newContact: newContact})
 }
