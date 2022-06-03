@@ -21,6 +21,7 @@ exports.validateContact = [
     .isEmail(),
   check('name')
     .notEmpty()
+    .isString()
     .bail(),
   (req, res, next) => {
     const errors = validationResult(req);
