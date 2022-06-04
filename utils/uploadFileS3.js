@@ -43,11 +43,4 @@ const uploadFile = async (fileName) => {
   }
 };
 
-const startUpload = async () => {
-  const imgKey = await uploadFile("roman6.jpg");
-  console.log("The key for the file is", imgKey);
-};
-
-startUpload();
-
 module.exports = { uploadFile };
