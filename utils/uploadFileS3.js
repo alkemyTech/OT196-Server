@@ -25,34 +25,29 @@ const randomKeyGenerator = () => {
 // Create S3 service object
 var s3 = new AWS.S3({ apiVersion: "2006-03-01" });
 
-// Upload a file to the bucket
-const uploadFile = (fileName) => {
+// Upload a file to the bucket. It returns a string with the file's key.
+const uploadFile = async (fileName) => {
   const fileContent = fs.readFileSync(fileName);
 
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key: randomKeyGenerator() + path.basename(fileName),
+    Key: `${randomKeyGenerator()}-${path.basename(fileName)}`,
     Body: fileContent,
   };
 
-  s3.upload(params, function (err, data) {
-    if (err) {
-      throw err;
-    }
-    console.log(`File uploaded successfully. ${data.Location}`);
-  });
+  try {
+    const stored = await s3.upload(params).promise();
+    return stored.Key;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
-// Upload example: uncomment the next line if you want to try it and put the image you want to test as a parameter.
-// uploadFile("img.jpg")
+const startUpload = async () => {
+  const imgKey = await uploadFile("roman6.jpg");
+  console.log("The key for the file is", imgKey);
+};
 
-// // List objects in the bucket
-// var paramsList = {
-//   Bucket: process.env.AWS_BUCKET_NAME,
-// };
-// s3.listObjects(paramsList, function (err, data) {
-//   if (err) console.log(err, err.stack); // an error occurred
-//   else console.log(data); // successful response
-// });
+startUpload();
 
 module.exports = { uploadFile };
