@@ -6,8 +6,6 @@ const UpdateNews = async function (req, res) {
     const { idNews } = req.params;
     // Req.Body for updates
     const { name, content, image, type } = req.body;
-    // Find de element to update by primary Key
-    // const newUpdate = await Entry.findByPk(idNews);
 
     // Update the element
     const ModifyNew = await Entry.update({
@@ -23,17 +21,9 @@ const UpdateNews = async function (req, res) {
             success: false,
             msj: 'No se encontró ninguna noticia',       
         });
-    } else {
-        // const updatedNews = await Entry.update({
-        //     name,
-        //     content,
-        //     image,
-        //     type
-        // },
-        // Returning for return the object   
+    } else {  
         res.status(200).send(`La noticia Nº${idNews} fue modificada. Actualizado con: name: ${name} content: ${content} image: ${image} type: ${type}`);
     }
-
 }
 
 module.exports = UpdateNews;
