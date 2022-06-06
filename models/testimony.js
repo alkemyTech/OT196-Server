@@ -13,12 +13,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Testimony.init(
     {
-      firstName: DataTypes.STRING,
-      lastName: DataTypes.STRING,
-      image: DataTypes.STRING,
-      phone: DataTypes.INTEGER,
-      address: DataTypes.STRING,
-      welcomeText: DataTypes.STRING,
+      name: DataTypes.STRING,
+      content: DataTypes.STRING(2000),
+      image: DataTypes.TEXT('long'),
     },
     {
       sequelize,
