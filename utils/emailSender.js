@@ -6,7 +6,7 @@ formatMessage.setup({ missingTranslation: "ignore" });
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Set EMAIL SENDER validated on SENDGRID
-const emailSender = "facugastonbarral@gmail.com";
+const emailSender = "";
 
 const emailTemplates = {
   ["default"]: {
