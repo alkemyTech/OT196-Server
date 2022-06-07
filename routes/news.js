@@ -57,14 +57,20 @@ router.get('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     const { id } = req.params
-    try {
-        await Entry.destroy({
-            where: { id },
-        })
-        res.send(`The news ${id} has been deleted correctly`)
-    } catch (error) {
-        console.log(error)
+    const entryToDestroy = await Entry.destroy({
+        where: { id },
+    })
+    if (entryToDestroy) {
+        res.status(200).send( `News ${id} deleted` )
+    } else {
+        return res.status(404).json({
+            success: false,
+            msj: 'No se encontró ninguna noticia',
+        });
     }
+
+
+
 });
 
 
