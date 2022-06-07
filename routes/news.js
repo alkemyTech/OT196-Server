@@ -60,6 +60,7 @@ router.delete('/:id', async (req, res) => {
     const entryToDestroy = await Entry.destroy({
         where: { id },
     })
+    // Validate if the entry exists
     if (entryToDestroy) {
         res.status(200).send( `News ${id} deleted` )
     } else {
