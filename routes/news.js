@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const Newscontroller = require ('../controllers/newsController')
+const Newscontroller = require('../controllers/newsController')
 const db = require("../models/index");
 const { Entry } = db;
 
@@ -12,9 +12,9 @@ router.put('/:idNews', Newscontroller);
 /*-- GET NEWS --*/
 router.get('/', async (req, res, next) => {
     try {
-        const allNews = await Entry.findAll(           
-            { 
-                attributes:[
+        const allNews = await Entry.findAll(
+            {
+                attributes: [
                     'id',
                     'name',
                     'image',
@@ -31,27 +31,41 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-// GET NEW BY ID 
-router.get('/:id', async (req, res)=> {
+// GET SINGLE NEWS BY ID 
+router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
-    const myNew = await Entry.findOne({
-        where: { 
-            id: id 
-        },
-        attributes:[
-            'id',
-            'name',
-            'image',
-            'content'
-        ],
-    })
-    res.json(myNew)
+        const myNew = await Entry.findOne({
+            where: {
+                id: id
+            },
+            attributes: [
+                'id',
+                'name',
+                'image',
+                'content'
+            ],
+        })
+        res.json(myNew)
     } catch (error) {
         res.status(404).send(error)
     }
-    
+
 })
+
+// DELETE SINGLE NEWS BY ID
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        await Entry.destroy({
+            where: { id },
+        })
+        res.send(`The news ${id} has been deleted correctly`)
+    } catch (error) {
+        console.log(error)
+    }
+});
 
 
 module.exports = router;
