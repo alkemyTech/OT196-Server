@@ -6,13 +6,10 @@ module.exports = {
       "Testimonials",
       [
         {
-          firstName: "Testimonio 1",
-          lastName: "Demo",
+          name: "Testimonio 1",
           image:
             "https://www.designevo.com/res/templates/thumb_small/colorful-hand-and-warm-community.png",
-          phone: 123456,
-          address: "Demo Address 1234",
-          welcomeText: "Welcome Demo",
+          content: "Content Demo",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
