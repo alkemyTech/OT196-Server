@@ -12,6 +12,7 @@ const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const testimonialsRouter = require("./routes/testimonials");
 const activitiesRouter = require("./routes/activities");
+const contactsRouter = require("./routes/contacts");
 
 const app = express();
 app.use(cors());
@@ -32,6 +33,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use("/organizations", testimonialsRouter);
+app.use("/contacts", contactsRouter);
 app.use("/news", newsRouter);
 
 // catch 404 and forward to error handler
@@ -49,5 +51,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+console.log('server ready on port 3000')
 
 module.exports = app;

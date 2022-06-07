@@ -33,3 +33,18 @@ exports.validateActivity = [
     next();
   },
 ];
+
+exports.validateContact = [
+  check('email')
+    .normalizeEmail()
+    .isEmail(),
+  check('name')
+    .notEmpty()
+    .isString()
+    .bail(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(422).json({ok: false, message: "Incorrect data."});
+    next();
+  },
+];

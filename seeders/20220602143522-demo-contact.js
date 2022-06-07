@@ -1,15 +1,15 @@
 "use strict";
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "Testimonials",
+      "Contacts",
       [
         {
-          name: "Testimonio 1",
-          image:
-            "https://www.designevo.com/res/templates/thumb_small/colorful-hand-and-warm-community.png",
-          content: "Content Demo",
+          name: "Contact Demo",
+          email: "contactTest@test.com",
+          phone: "2235066655",
+          message: "Example of message",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
