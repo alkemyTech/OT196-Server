@@ -1,19 +1,17 @@
 var express = require('express');
 var router = express.Router();
-const { createNews } = require('../controllers/newsController')
+const { createNews, UpdateNews } = require('../controllers/newsController')
 const { validateNewsPost } = require("../middlewares/validators/formsValidator")
 const { adminValidation } = require("../middlewares/validators/userValidators")
-const Newscontroller = require ('../controllers/newsController')
-
-const db = require("../models/index");
-const { Entry } = db;
+const { Entry } = require("../models/index");
 
 router.post('/', express.json({limit: "2mb"}), adminValidation, validateNewsPost, createNews);
 
 router.use(express.json())
 router.use(express.urlencoded({extended: false}))
+
 /*-- PUT NEWS --*/
-router.put('/:idNews', Newscontroller);
+router.put('/:idNews', UpdateNews);
 
 //More endpoints with default limit
 /*-- GET NEWS --*/
