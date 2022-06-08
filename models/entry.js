@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   Entry.init({
     name: DataTypes.STRING,
     content: DataTypes.STRING(2500),
-    image: DataTypes.STRING,
+    image: DataTypes.TEXT('long')	,
     categoryId: DataTypes.INTEGER,
     type: {type: DataTypes.STRING, validate:{isIn: [['news', 'event', 'other']]}}
   }, {

@@ -28,20 +28,20 @@ router.get("/", adminValidation, async (req, res, next) => {
 
 router.get("/auth/me", function (req, res) {
   let token = req.header.token;
-  user.find({ token: token }, function (err, userMe) {
-    if (err) {
-      return res.json({
-        success: false,
-        msj: "No se encontró ningún usuario",
-        err,
-      });
-    } else {
-      return res.json({
-        success: true,
-        user: userMe,
-      });
-    }
-  });
+  User.find({ token: token }, function(err, userMe) {
+      if (err) {
+          return res.json({
+              success: false,
+              msj: 'No se encontró ningún usuario',
+              err
+          });
+      } else {
+          return res.json({
+              success: true,
+              user: userMe
+          });
+      }
+  })
 });
 
 router.post("/auth/register", validateCreate, async (req, res) => {
