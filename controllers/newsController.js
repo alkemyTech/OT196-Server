@@ -1,7 +1,7 @@
 const db = require("../models/index");
 const { Entry } = db;
 
-const UpdateNews = async function (req, res) {
+exports.UpdateNews = async function (req, res) {
     // Save id from params 
     const { idNews } = req.params;
     // Req.Body for updates
@@ -35,4 +35,3 @@ exports.createNews = async function( req, res ){
     .catch(e => res.status(400).send({success: false, message: e.errors[0].message || e.name}))
 }
 
-module.exports = UpdateNews;
