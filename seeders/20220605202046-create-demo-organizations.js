@@ -12,7 +12,7 @@ module.exports = {
           address: "Av. Siempreviva 742",
           welcomeText: "Desde 1997 en Somos Más trabajamos con los chicos y chicas, mamás y papás, abuelos y vecinos del barrio La Cava generando procesos de crecimiento y de inserción social.",
           twitter: "https://www.twitter.com/SomosMas",
-          facebook: "https://www.instagram.com/Somos_Mas",
+          facebook: "https://www.facebook.com/Somos_Mas",
           whatsapp: "https://api.whatsapp.com/send/?phone=%2B541160112988",
           instagram: "https://www.instagram.com/SomosMas",
           createdAt: new Date(),
