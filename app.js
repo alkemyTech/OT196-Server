@@ -34,6 +34,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/auth", authRouter);
 app.use("/organizations", testimonialsRouter);
+app.use("/testimonials", testimonialsRouter);
 app.use("/contacts", contactsRouter);
 app.use("/news", newsRouter);
 app.use("/activities", activitiesRouter);
