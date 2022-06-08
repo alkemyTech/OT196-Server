@@ -1,5 +1,5 @@
-const e = require("express");
 var express = require("express");
+const validateTest = require("../controllers/validateTestimony");
 var router = express.Router();
 
 const db = require("../models/index");
@@ -33,5 +33,17 @@ router.get("/1/public", async (req, res, next) => {
     return res.status(500).json({ message: e.message });
   }
 });
+
+router.post('/', validateTest, (req, res) => {
+  try {
+    Testimony.create({
+      name: req.body.name,
+      content: req.body.content
+    })
+    .then(result =>  res.json(result))
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+})
 
 module.exports = router;
