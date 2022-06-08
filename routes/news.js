@@ -1,12 +1,18 @@
-const { Router } = require("express");
-const router = Router()
+var express = require('express');
+var router = express.Router();
+
+const Newscontroller = require ('../controllers/newsController')
 const db = require("../models/index");
 const { Entry } = db;
+
+/*-- PUT NEWS --*/
+router.put('/:idNews', Newscontroller);
+
 
 /*-- GET NEWS --*/
 router.get('/', async (req, res, next) => {
     try {
-        const allNews = await Entry.findAll(
+        const allNews = await Entry.findAll(           
             { 
                 attributes:[
                     'id',
@@ -14,14 +20,14 @@ router.get('/', async (req, res, next) => {
                     'image',
                     'createdAt'
                 ],
-                where:{ 
+                where: {
                     type: 'news'
                 }
             }
         )
         res.status(200).json(allNews)
     } catch (err) {
-        res.status(500).json({success: false, error: err.message})
+        res.error(err.status || 403)
     }
 })
 

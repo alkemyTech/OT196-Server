@@ -14,6 +14,7 @@ const testimonialsRouter = require("./routes/testimonials");
 const contactsRouter = require("./routes/contacts");
 const activitiesRouter = require("./routes/activities");
 
+
 const app = express();
 app.use(cors());
 
