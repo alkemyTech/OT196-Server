@@ -33,3 +33,30 @@ exports.createTestimony = (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// Delete a Testimony
+exports.deleteTestimony = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedTestimony = await Testimony.destroy({
+      where: {
+        id,
+      },
+    });
+    if (!deletedTestimony) {
+      return res.status(500).send({
+        success: false,
+        message: "Operation failed. The selected testimony does not exist.",
+      });
+    }
+    return res.status(200).send({
+      success: true,
+      message: "The testimony has been deleted.",
+    });
+  } catch (e) {
+    return res.status(500).send({
+      success: false,
+      message: e.message,
+    });
+  }
+};
