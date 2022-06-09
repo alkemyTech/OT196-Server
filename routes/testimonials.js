@@ -38,12 +38,35 @@ router.post('/', validateTest, (req, res) => {
   try {
     Testimony.create({
       name: req.body.name,
-      content: req.body.content
+      content: req.body.content, 
     })
     .then(result =>  res.json(result))
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
+})
+
+router.put('/:id', async (req, res)=> {
+  const { id } = req.params
+  const { name, content } = req.body
+  try {
+    const myTestimony = await Testimony.findOne({where: {id}})
+    if(!myTestimony){
+      res.status(404).json({message: 'Your  testimony id is not in the database'})
+    } else if (!name || !content){
+      res.status(404).json({message: 'A name is required'})
+    } else {
+      await Testimony.update(
+        {  name: name, content: content }, 
+        { where: { id: id } }
+      )         
+      const newTestimony = await Testimony.findOne({where: { id }})
+      res.send(newTestimony)
+    }
+  } catch (error) {
+    res.status(500).json({message: error.message})
+  } 
+
 })
 
 module.exports = router;
