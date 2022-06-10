@@ -11,6 +11,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const testimonialsRouter = require("./routes/testimonials");
+const activitiesRouter = require("./routes/activities");
 const contactsRouter = require("./routes/contacts");
 const activitiesRouter = require("./routes/activities");
 
@@ -22,6 +23,7 @@ app.use(cors());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+app.use("/activities", activitiesRouter);
 app.use('/news', newsRouter);
 
 app.use(logger("dev"));
