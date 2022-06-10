@@ -1,8 +1,43 @@
-const { category } = require('../models/index')
+// Add Categories' Model
+const { Category } = require("../models/index");
+
+exports.updateCategory = async (req, res) => {
+  // Get id from params
+  const { id } = req.params;
+  // Get the values to update
+  const { name, description } = req.body;
+
+  try {
+    // Update the category
+    const modifiedCategory = await Category.update(
+      {
+        name,
+        description,
+      },
+      { where: { id: id } }
+    );
+    if (modifiedCategory != 0) {
+      res.status(200).send({
+        success: true,
+        message: "The category has been updated.",
+      });
+    } else {
+      return res.status(500).send({
+        success: false,
+        message: "The category to be modified does not exist",
+      });
+    }
+  } catch (e) {
+    return res.status(500).send({
+      success: false,
+      message: e.message,
+    });
+  }
+};
 
 exports.deleteCategory = async (req, res) => {
     const { id } = req.params;
-    const objectToDelete = await category.findByPk(id);
+    const objectToDelete = await Category.findByPk(id);
     if(objectToDelete === null){
         res.status(404).json({ 
             success: false, 
@@ -10,7 +45,7 @@ exports.deleteCategory = async (req, res) => {
         })
     } else {
         try {
-            category.destroy({ where: { id }})
+            Category.destroy({ where: { id }})
             res.send('Deleted category successfull!')
         } catch (error) {
             res.status(500).json({ 
