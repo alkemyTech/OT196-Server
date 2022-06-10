@@ -16,6 +16,24 @@ exports.validateLogin = [
   },
 ];
 
+exports.validateActivity = [
+  check('name')
+    .notEmpty()
+    .bail(),
+    check('image')
+    .notEmpty()
+    .isURL()
+    .bail(),
+    check('content').isLength({ max: 2500 })
+    .notEmpty()
+    .bail(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(422).json({ok: false, message: "Incorrect data."});
+    next();
+  },
+];
+
 // Allow to validate if image is a base64 encoded image
 const isBase64Image = function(str){
   const regex = /^data:image\/(?:gif|png|jpeg|bmp|webp|svg\+xml)(?:;charset=utf-8)?;base64,(?:[A-Za-z0-9]|[+/])+={0,2}/;
@@ -43,6 +61,7 @@ exports.validateNewsPost = [
       next();
     },
 ]
+
 
 exports.validateContact = [
   check('email')
