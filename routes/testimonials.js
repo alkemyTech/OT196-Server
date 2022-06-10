@@ -46,27 +46,20 @@ router.post('/', validateTest, (req, res) => {
   }
 })
 
+//ROUTE AND FUNCTION FOR UPDATE A TESTIMONIAL  
 router.put('/:id', async (req, res)=> {
   const { id } = req.params
-  const { name, content } = req.body
+  const { name, content } = req.body 
+  if(!name || !content) res.status(404).json( {message: 'Name and testimony are required'} )
   try {
-    const myTestimony = await Testimony.findOne({where: {id}})
-    if(!myTestimony){
-      res.status(404).json({message: 'Your  testimony id is not in the database'})
-    } else if (!name || !content){
-      res.status(404).json({message: 'A name is required'})
-    } else {
-      await Testimony.update(
-        {  name: name, content: content }, 
-        { where: { id: id } }
-      )         
-      const newTestimony = await Testimony.findOne({where: { id }})
-      res.send(newTestimony)
-    }
+    await Testimony.update(
+      { name: name, content: content }, 
+      { where: { id: id } }      
+    )
+    res.status(200).send(req.body)
   } catch (error) {
     res.status(500).json({message: error.message})
-  } 
-
+  }
 })
 
 module.exports = router;
