@@ -36,23 +36,21 @@ exports.updateCategory = async (req, res) => {
 };
 
 exports.deleteCategory = async (req, res) => {
-    const { id } = req.params;
-    const objectToDelete = await Category.findByPk(id);
-    if(objectToDelete === null){
-        res.status(404).json({ 
-            success: false, 
-            message: 'This category is not in the list' 
-        })
-    } else {
-        try {
-            Category.destroy({ where: { id }})
-            res.send('Deleted category successfull!')
-        } catch (error) {
-            res.status(500).json({ 
-                success: false,
-                message: error.message
+    try {
+        await Category.destroy({ where: { id: req.params.id }, returning: true})
+        .then(
+            rowsDestroyed => rowsDestroyed ? 
+            res.status(204).send('Deleted category successfull!') 
+            : 
+            res.status(404).send({ 
+                success: false, 
+                message: 'This category is not in the list' 
             })
-        }
-
+        )
+    } catch (error) {
+        res.status(500).send({ 
+            success: false,
+            message: error.message
+        })
     }
 }
