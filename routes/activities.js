@@ -13,12 +13,12 @@ router.use(express.urlencoded({extended: false}))
 //More endpoints with default limit
 
 router.get("/:id", getActivityDetails);
-// router.post("/", adminValidation, validateNewActivity, createActivity);
+router.post("/", adminValidation, validateActivity, createActivity); //RUTA MODIFICADA, VALIDATENEWACTIVITIE NO ESTA EN FORMSVALIDATOR
 
 module.exports = router;
 
 
 router.get("/:id", getActivityDetails);
-// router.post("/", adminValidation, validateNewActivity, createActivity);
+router.post("/", adminValidation, validateActivity, createActivity);//RUTA MODIFICADA, VALIDATENEWACTIVITIE NO ESTA EN FORMSVALIDATOR
 
 module.exports = router;
