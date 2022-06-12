@@ -77,3 +77,10 @@ exports.validateContact = [
     next();
   },
 ];
+
+exports.categoryCreateSchema = [
+  check('name')
+  .notEmpty()
+  .isString()
+  .isLength({min: 3})
+]
