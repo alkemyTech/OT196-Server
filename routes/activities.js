@@ -13,15 +13,6 @@ router.use(express.urlencoded({extended: false}))
 //More endpoints with default limit
 
 router.get("/:id", getActivityDetails);
-router.post("/", adminValidation, validateNewActivity, createActivity);
-
-module.exports = router;
-
-const express = require('express');
-const router = express.Router();
-
-
-router.get("/:id", getActivityDetails);
-router.post("/", adminValidation, validateNewActivity, createActivity);
+router.post("/", adminValidation, validateActivity, createActivity);
 
 module.exports = router;
