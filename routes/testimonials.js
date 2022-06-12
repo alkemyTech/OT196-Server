@@ -33,7 +33,6 @@ router.post('/', validateTest, (req, res) => {
     Testimony.create({
       name: req.body.name,
       content: req.body.content,
-      id: req.body.id 
     })
     .then(result =>  res.json(result))
   } catch (error) {

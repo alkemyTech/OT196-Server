@@ -13,10 +13,10 @@ const authRouter = require("./routes/auth");
 const testimonialsRouter = require("./routes/testimonials");
 const activitiesRouter = require("./routes/activities");
 const contactsRouter = require("./routes/contacts");
-const activitiesRouter = require("./routes/activities");
 const categoriesRouter = require("./routes/categories");
 
 const app = express();
+
 app.use(cors());
 
 // view engine setup
@@ -38,7 +38,6 @@ app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use("/testimonials", testimonialsRouter);
 app.use("/contacts", contactsRouter);
-app.use("/activities", activitiesRouter);
 app.use("/categories", categoriesRouter);
 
 // catch 404 and forward to error handler
