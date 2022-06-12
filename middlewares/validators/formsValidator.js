@@ -58,3 +58,17 @@ exports.validateContact = [
     next();
   },
 ];
+
+exports.validateUpdateTestimony = [
+  check('name')
+  .notEmpty()
+  .isString(),
+  check('content')
+  .notEmpty()
+  .isString(),
+  (req, res, next)=> {
+    const errors = validationResult(req); 
+    if(!errors.isEmpty()) return res.status(422).json({ok: false, message: 'Name and content are required'})
+    next()
+  }
+]

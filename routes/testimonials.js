@@ -1,5 +1,6 @@
 var express = require("express");
 const validateTest = require("../controllers/validateTestimony");
+const { validateUpdateTestimony } = require("../middlewares/validators/formsValidator");
 var router = express.Router();
 
 const db = require("../models/index");
@@ -38,7 +39,8 @@ router.post('/', validateTest, (req, res) => {
   try {
     Testimony.create({
       name: req.body.name,
-      content: req.body.content, 
+      content: req.body.content,
+      id: req.body.id 
     })
     .then(result =>  res.json(result))
   } catch (error) {
@@ -47,16 +49,17 @@ router.post('/', validateTest, (req, res) => {
 })
 
 //ROUTE AND FUNCTION FOR UPDATE A TESTIMONIAL  
-router.put('/:id', async (req, res)=> {
+router.put('/:id', validateUpdateTestimony , async (req, res)=> {
   const { id } = req.params
   const { name, content } = req.body 
-  if(!name || !content) res.status(404).json( {message: 'Name and testimony are required'} )
   try {
-    await Testimony.update(
+    const testimonyUpdate = await Testimony.update(
       { name: name, content: content }, 
-      { where: { id: id } }      
+      { where: { id: id } },          
     )
-    res.status(200).send(req.body)
+    testimonyUpdate[0] !== 0 ? res.send(req.body) : 
+    res.status(404).send('testimonial not found in the database')
+    
   } catch (error) {
     res.status(500).json({message: error.message})
   }
