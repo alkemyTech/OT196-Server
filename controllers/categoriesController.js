@@ -34,3 +34,11 @@ exports.updateCategory = async (req, res) => {
     });
   }
 };
+
+exports.createCategory = async (req, res) => {
+  const { name, description } = req.body;
+
+  newCategory = await Category.create({name: name, description: description || ""})
+  .then(res.status(200).send({success: true, message: `The category ${name} has been created.`, result: newCategory}))
+  .catch(res.status(500).send({success: false, message: `Error on create new category.`}))
+}
