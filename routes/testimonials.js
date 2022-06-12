@@ -48,7 +48,7 @@ router.post('/', validateTest, (req, res) => {
   }
 })
 
-//ROUTE AND FUNCTION FOR UPDATE A TESTIMONIAL  
+//ROUTE AND FUNCTION FOR UPDATE A TESTIMONIAL   
 router.put('/:id', validateUpdateTestimony , async (req, res)=> {
   const { id } = req.params
   const { name, content } = req.body 
