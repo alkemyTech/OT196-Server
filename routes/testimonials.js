@@ -2,6 +2,7 @@ var express = require("express");
 const validateTest = require("../controllers/validateTestimony");
 const { validateUpdateTestimony } = require("../middlewares/validators/formsValidator");
 var router = express.Router();
+const { adminValidation } = require("../middlewares/validators/userValidators");
 
 const db = require("../models/index");
 
@@ -9,32 +10,24 @@ const db = require("../models/index");
 const { Testimony } = db;
 
 // GET all Testimonials' information
-router.get("/1/public", async (req, res, next) => {
+router.get("/", adminValidation, async (req, res, next) => {
   try {
     // Get data from DB
     const allTestimonials = await Testimony.findAll({
       attributes: [
-        "firstName",
-        "lastName",
+        "id",
+        "name",
+        "content",
         "image",
-        "phone",
-        "address",
-        "welcomeText",
       ],
     });
-
-    // Name will be the union between firstName and lastName
-    allTestimonials[0].dataValues.name =
-      allTestimonials[0].dataValues.firstName +
-      " " +
-      allTestimonials[0].dataValues.lastName;
-
     res.json(allTestimonials);
   } catch (e) {
     return res.status(500).json({ message: e.message });
   }
 });
 
+//Endpoint Post Testimonials
 router.post('/', validateTest, (req, res) => {
   try {
     Testimony.create({
@@ -46,7 +39,21 @@ router.post('/', validateTest, (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-})
+});
+
+// Endpoint DELETE data
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    //Select data to delete
+    await Testimony.destroy({
+      where: { id }       
+    })
+    res.send('The testimony has been deleted correctly');
+  } catch (e) {
+    return res.status(500).json({ message: e.message });
+  }
+});
 
 //ROUTE AND FUNCTION FOR UPDATE A TESTIMONIAL   
 router.put('/:id', validateUpdateTestimony , async (req, res)=> {

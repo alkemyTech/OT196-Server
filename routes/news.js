@@ -36,17 +36,17 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-// GET NEW BY ID 
+// GET NEWS BY ID 
 router.get('/:id', async (req, res)=> {
     const { id } = req.params;
     try {
-    const myNew = await Entry.findOne({
+    const response = await Entry.findOne({
         where: { 
             type: 'news', 
             id: id 
         }
     })
-    res.send(myNew)
+    res.send(response)
     } catch (error) {
         res.status(404).send(error)
     }
