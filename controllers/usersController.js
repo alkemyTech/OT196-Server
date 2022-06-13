@@ -55,3 +55,38 @@ exports.deleteUser = async (req, res) => {
     console.log(error);
   }
 };
+
+exports.updateUser = async (req, res) => {
+  // Get id from params
+  const { id } = req.params;
+  // Get the values to update
+  const { firstName, lastName, email } = req.body;
+
+  try {
+    // Update the category
+    const modifiedUser = await User.update(
+      {
+        firstName,
+        lastName,
+        email,
+      },
+      { where: { id } }
+    );
+    if (modifiedUser != 0) {
+      res.status(200).send({
+        success: true,
+        message: "The user has been updated.",
+      });
+    } else {
+      return res.status(500).send({
+        success: false,
+        message: "The user to be modified does not exist",
+      });
+    }
+  } catch (e) {
+    return res.status(500).send({
+      success: false,
+      message: e.message,
+    });
+  }
+};
