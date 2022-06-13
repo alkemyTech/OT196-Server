@@ -7,6 +7,7 @@ const {
   getLoggedUser,
   registerUser,
   deleteUser,
+  updateUser,
 } = require("../controllers/usersController");
 
 /* GET users listing. */
@@ -20,5 +21,8 @@ router.post("/auth/register", validateCreate, registerUser);
 
 // Delete user
 router.delete("/user/:id", deleteUser);
+
+// Update user
+router.put("/:id", adminValidation, updateUser);
 
 module.exports = router;
