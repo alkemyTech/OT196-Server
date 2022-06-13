@@ -20,7 +20,7 @@ router.get("/auth/me", getLoggedUser);
 router.post("/auth/register", validateCreate, registerUser);
 
 // Delete user
-router.delete("/user/:id", deleteUser);
+router.delete("/:id", deleteUser);
 
 // Update user
 router.put("/:id", adminValidation, updateUser);
