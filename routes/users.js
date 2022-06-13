@@ -15,7 +15,7 @@ router.get("/", adminValidation, async (req, res, next) => {
   try {
     // Get data from DB
     const allUsers = await User.findAll({
-      attributes: ["firstName", "lastName", "email", "image", "roleId"],
+      attributes: ["id", "firstName", "lastName", "email", "image", "roleId"],
     });
 
     res.json(allUsers);
@@ -28,20 +28,20 @@ router.get("/", adminValidation, async (req, res, next) => {
 
 router.get("/auth/me", function (req, res) {
   let token = req.header.token;
-  User.find({ token: token }, function(err, userMe) {
-      if (err) {
-          return res.json({
-              success: false,
-              msj: 'No se encontró ningún usuario',
-              err
-          });
-      } else {
-          return res.json({
-              success: true,
-              user: userMe
-          });
-      }
-  })
+  User.find({ token: token }, function (err, userMe) {
+    if (err) {
+      return res.json({
+        success: false,
+        msj: "No se encontró ningún usuario",
+        err,
+      });
+    } else {
+      return res.json({
+        success: true,
+        user: userMe,
+      });
+    }
+  });
 });
 
 router.post("/auth/register", validateCreate, async (req, res) => {
@@ -50,23 +50,20 @@ router.post("/auth/register", validateCreate, async (req, res) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
-    password: passwordHash
-  })
-  .then(user =>  res.json(user))
+    password: passwordHash,
+  }).then((user) => res.json(user));
 });
 
-router.delete('/user/:id', async (req, res)=> {
-  const { id } = req.params 
+router.delete("/user/:id", async (req, res) => {
+  const { id } = req.params;
   try {
     await User.destroy({
-      where: { id },       
-    })
-    res.send('The user has been deleted correctly')
+      where: { id },
+    });
+    res.send("The user has been deleted correctly");
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 });
-
-
 
 module.exports = router;
