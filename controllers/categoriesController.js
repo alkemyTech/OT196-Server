@@ -34,3 +34,9 @@ exports.updateCategory = async (req, res) => {
     });
   }
 };
+
+exports.getAllCategories = async (req, res) => {
+  await Category.findAll({attributes: ['name']})
+  .then((response)=>res.status(200).send({success: true, result: response}))
+  .catch((e)=>res.status(500).send({success: false, result: e.original?.sqlMessage || e.name || "Error on fetch categories list."}))
+}
