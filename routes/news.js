@@ -42,9 +42,14 @@ router.get('/:id', async (req, res)=> {
     try {
     const response = await Entry.findOne({
         where: { 
-            type: 'news', 
             id: id 
-        }
+        },
+        attributes:[
+            'id',
+            'name',
+            'image',
+            'content'
+        ],
     })
     res.send(response)
     } catch (error) {
