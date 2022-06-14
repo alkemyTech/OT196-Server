@@ -40,3 +40,23 @@ exports.getAllCategories = async (req, res) => {
   .then((response)=>res.status(200).send({success: true, result: response}))
   .catch((e)=>res.status(500).send({success: false, result: e.original?.sqlMessage || e.name || "Error on fetch categories list."}))
 }
+
+exports.deleteCategory = async (req, res) => {
+    try {
+        await Category.destroy({ where: { id: req.params.id }, returning: true})
+        .then(
+            rowsDestroyed => rowsDestroyed ? 
+            res.status(204).send('Deleted category successfull!') 
+            : 
+            res.status(404).send({ 
+                success: false, 
+                message: 'This category is not in the list' 
+            })
+        )
+    } catch (error) {
+        res.status(500).send({ 
+            success: false,
+            message: error.message
+        })
+    }
+}
