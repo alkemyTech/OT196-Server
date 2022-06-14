@@ -17,6 +17,7 @@ const contactsRouter = require("./routes/contacts");
 const categoriesRouter = require("./routes/categories");
 
 const app = express();
+
 app.use(cors());
 
 // view engine setup
@@ -37,7 +38,6 @@ app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use("/testimonials", testimonialsRouter);
 app.use("/contacts", contactsRouter);
-app.use("/activities", activitiesRouter);
 app.use("/categories", categoriesRouter);
 app.use("/organizations", organizationsRouter);
 
