@@ -17,9 +17,9 @@ router.put('/:idNews', UpdateNews);
 /*-- GET NEWS --*/
 router.get('/', async (req, res, next) => {
     try {
-        const allNews = await Entry.findAll(           
-            { 
-                attributes:[
+        const allNews = await Entry.findAll(
+            {
+                attributes: [
                     'id',
                     'name',
                     'image',
@@ -42,16 +42,42 @@ router.get('/:id', async (req, res)=> {
     try {
     const response = await Entry.findOne({
         where: { 
-            type: 'news', 
             id: id 
-        }
+        },
+        attributes:[
+            'id',
+            'name',
+            'image',
+            'content'
+        ],
     })
     res.send(response)
     } catch (error) {
         res.status(404).send(error)
     }
-    
+
 })
+
+// DELETE SINGLE NEWS BY ID
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params
+    const entryToDestroy = await Entry.destroy({
+        where: { id },
+    })
+    // Validate if the entry exists
+    if (entryToDestroy) {
+        res.status(200).send( `News ${id} deleted` )
+    } else {
+        return res.status(404).json({
+            success: false,
+            msj: 'No se encontró ninguna noticia',
+        });
+    }
+
+
+
+});
 
 
 module.exports = router;

@@ -1,9 +1,10 @@
 var express = require("express");
 var router = express.Router();
 const { adminValidation } = require("../middlewares/validators/userValidators");
-const { updateCategory, createCategory } = require("../controllers/categoriesController");
+const { updateCategory, createCategory, deleteCategory } = require("../controllers/categoriesController");
 const { categoryCreateSchema } = require("../middlewares/validators/formsValidator");
 
+router.delete('/:id', deleteCategory);
 router.put("/:id", adminValidation, updateCategory);
 router.post("/", categoryCreateSchema, adminValidation, createCategory);
 

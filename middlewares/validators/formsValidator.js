@@ -62,7 +62,6 @@ exports.validateNewsPost = [
     },
 ]
 
-
 exports.validateContact = [
   check('email')
     .normalizeEmail()
@@ -88,4 +87,18 @@ exports.categoryCreateSchema = [
     if (!errors.isEmpty()) return res.status(422).json({success: false, message: "Incorrect body data."});
     next();
   },
+]
+
+exports.validateUpdateTestimony = [
+  check('name')
+  .notEmpty()
+  .isString(),
+  check('content')
+  .notEmpty()
+  .isString(),
+  (req, res, next)=> {
+    const errors = validationResult(req); 
+    if(!errors.isEmpty()) return res.status(422).json({ok: false, message: 'Name and content are required'})
+    next()
+  }
 ]
