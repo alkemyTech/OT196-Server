@@ -34,3 +34,23 @@ exports.updateCategory = async (req, res) => {
     });
   }
 };
+
+exports.deleteCategory = async (req, res) => {
+    try {
+        await Category.destroy({ where: { id: req.params.id }, returning: true})
+        .then(
+            rowsDestroyed => rowsDestroyed ? 
+            res.status(204).send('Deleted category successfull!') 
+            : 
+            res.status(404).send({ 
+                success: false, 
+                message: 'This category is not in the list' 
+            })
+        )
+    } catch (error) {
+        res.status(500).send({ 
+            success: false,
+            message: error.message
+        })
+    }
+}
