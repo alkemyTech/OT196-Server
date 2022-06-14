@@ -1,13 +1,11 @@
 const db = require("../models/index");
 const { Entry } = db;
 
-const UpdateNews = async function (req, res) {
+exports.UpdateNews = async function (req, res) {
     // Save id from params 
     const { idNews } = req.params;
     // Req.Body for updates
     const { name, content, image, type } = req.body;
-    // Find de element to update by primary Key
-    // const newUpdate = await Entry.findByPk(idNews);
 
     // Update the element
     const ModifyNew = await Entry.update({
@@ -23,17 +21,17 @@ const UpdateNews = async function (req, res) {
             success: false,
             msj: 'No se encontró ninguna noticia',       
         });
-    } else {
-        // const updatedNews = await Entry.update({
-        //     name,
-        //     content,
-        //     image,
-        //     type
-        // },
-        // Returning for return the object   
+    } else {  
         res.status(200).send(`La noticia Nº${idNews} fue modificada. Actualizado con: name: ${name} content: ${content} image: ${image} type: ${type}`);
     }
-
 }
 
-module.exports = UpdateNews;
+exports.createNews = async function( req, res ){
+    // Admin role & neccessary values are already validated
+    const {name, content, image, categoryId} = req.body
+    const type = "news" 
+    Entry.create({ name, content, image, categoryId, type})
+    .then(newEntry => res.status(200).send({success: true, message: "News created successfully.", createdNew: newEntry}))
+    .catch(e => res.status(400).send({success: false, message: e.errors[0].message || e.name}))
+}
+
