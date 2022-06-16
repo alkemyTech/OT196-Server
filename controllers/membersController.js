@@ -1,17 +1,21 @@
 const { members } = require("../models/index");
 
+// Controller DELETE member
 exports.deleteMember = async (req, res) => {
-    try {
+    try { 
+        //Select member and try delete
         await members.destroy({ where: { id: req.params.id }, returning: true})
-        .then(
+        .then( 
+            //if found and deleted the member, send response status
             rowsDestroyed => rowsDestroyed ? 
             res.status(200).json({
-                message: 'Deleted member successfull!'
+                message: '¡Miembro eliminado con éxito!'
             }) 
             : 
+            //else if not found, send response not found member
             res.status(404).json({ 
                 success: false, 
-                message: 'This member does not exist in the list' 
+                message: 'El miembro que está buscando no se encuentra en la lista' 
             })
         )
     } catch (error) {
