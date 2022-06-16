@@ -6,6 +6,7 @@ exports.getMembers = async(req, res) => {
         const allMembers =
         await members.findAll({
             attributes: [
+                'id',
                 'name',
                 'image'
             ]
