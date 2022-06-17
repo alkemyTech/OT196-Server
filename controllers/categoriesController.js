@@ -39,16 +39,39 @@ exports.getAllCategories = async (req, res) => {
   await Category.findAll({ attributes: ["name", "id"] })
     .then((response) =>
       res.status(200).send({ success: true, result: response })
+      )
+      .catch((e) =>
+        res
+          .status(500)
+          .send({
+            success: false,
+            result:
+            e.original?.sqlMessage ||
+            e.name ||
+            "Error on fetch categories list.",
+        })
+    );
+};
+
+exports.createCategory = async (req, res) => {
+  const { name, description } = req.body;
+  await Category.create({ name: name, description: description || "" })
+    .then((response) =>
+      res
+        .status(200)
+        .send({
+          success: true,
+          message: `The category has been created.`,
+          result: response.dataValues,
+        })
     )
     .catch((e) =>
       res
         .status(500)
         .send({
           success: false,
-          result:
-            e.original?.sqlMessage ||
-            e.name ||
-            "Error on fetch categories list.",
+          message: `Error on create new category.`,
+          error: e.original?.sqlMessage || e.name || "Error on update.",
         })
     );
 };

@@ -62,7 +62,6 @@ exports.validateNewsPost = [
     },
 ]
 
-
 exports.validateContact = [
   check('email')
     .normalizeEmail()
@@ -77,6 +76,18 @@ exports.validateContact = [
     next();
   },
 ];
+
+exports.categoryCreateSchema = [
+  check('name')
+  .notEmpty()
+  .isString()
+  .isLength({min: 3}),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(422).json({success: false, message: "Incorrect body data."});
+    next();
+  },
+]
 
 exports.validateUpdateTestimony = [
   check('name')
