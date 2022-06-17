@@ -18,5 +18,22 @@ exports.createMember = async(req, res) => {
     }
 }
 
+exports.updateMember = async(req, res)=> {
+    try {
+        const { id } = req.params
+        const { name, image } = req.body
+        await members.update(
+            { name, image },  
+            { where: { id } }
+        )
+        res.json({
+            success: true,
+            message: 'Miembro actualizado con éxito', 
+    })
+    } catch (error) {
+        res.status(500).json(error.message)
+    }
+}
+
 
 
