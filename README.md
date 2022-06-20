@@ -26,4 +26,32 @@ npx sequelize-cli db:seed:all
 ``` bash
 npm start
 ```
-=asdasd
+
+## Test accounts for the website
+### Principal demo accounts
+| Email | Password | Role |
+| ------------- | ------------- | ------------- |
+| usuarionormal@mail.com  | normal | User
+| usuarioadmin@mail.com  | admin | Admin 
+
+### All demo accounts
+| Email | Password | Role |
+| ------------- | ------------- | ------------- |
+| facundoolmedo@mail.com| olmedo | Admin |
+| ezequielalmada@mail.com| almada | Admin|
+| gerardofernandez@mail.com| fernandez | Admin|
+| santiagoperez@mail.com| perez | Admin|
+| micaelatorres@mail.com| torres | Admin|
+| valentinaaguirre@mail.com| aguirre | Admin|
+| sofiamedina@mail.com| medina | Admin|
+| ludmilaflores@mail.com| flores | Admin|
+| martinabenitez@mail.com| benitez | Admin|
+| juanrodriguez@mail.com| rodriguez | User |
+| carlosgutierrez@mail.com| gutierrez | User|
+| sebastianmendoza@mail.com| mendoza | User|
+| martinsanchez@mail.com| sanchez| User|
+| julianromero@mail.com| romero | User|
+| ceciliasosa@mail.com| sosa | User|
+| carlaramirez@mail.com| ramirez | User|
+| fernandaruiz@mail.com| ruiz | User|
+| esmeraldaherrera@mail.com| herrera | User|
