@@ -26,15 +26,31 @@ const USERS_LIST = [
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('Users', USERS_LIST.map(
-      (e) => {
-        e.createdAt = new Date
-        e.updatedAt = new Date
-        e.password = bcrypt.hashSync((e.lastName).toLowerCase(), 10)
-        e.email = (e.firstName + e.lastName).toLowerCase() + '@mail.com'
-        e.image = 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png'
-        return e
-      }), {});
+    return queryInterface.sequelize.transaction((t) => {
+      return Promise.all([
+        queryInterface.bulkDelete(
+          "Users",
+          null,
+          {
+            truncate: true,
+            transaction: t
+          },
+        ),
+        queryInterface.bulkInsert(
+          "Users",
+          USERS_LIST.map((e) => {
+            e.createdAt = new Date();
+            e.updatedAt = new Date();
+            e.password = bcrypt.hashSync(e.lastName.toLowerCase(), 10);
+            e.email = (e.firstName + e.lastName).toLowerCase() + "@mail.com";
+            e.image =
+              "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png";
+            return e;
+          }),
+          {transaction: t},
+        ),
+      ]);
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
