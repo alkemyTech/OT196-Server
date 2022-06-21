@@ -35,6 +35,24 @@ exports.updateCategory = async (req, res) => {
   }
 };
 
+exports.getAllCategories = async (req, res) => {
+  await Category.findAll({ attributes: ["name", "id"] })
+    .then((response) =>
+      res.status(200).send({ success: true, result: response })
+      )
+      .catch((e) =>
+        res
+          .status(500)
+          .send({
+            success: false,
+            result:
+            e.original?.sqlMessage ||
+            e.name ||
+            "Error on fetch categories list.",
+        })
+    );
+};
+
 exports.createCategory = async (req, res) => {
   const { name, description } = req.body;
   await Category.create({ name: name, description: description || "" })
@@ -59,21 +77,22 @@ exports.createCategory = async (req, res) => {
 };
 
 exports.deleteCategory = async (req, res) => {
-    try {
-        await Category.destroy({ where: { id: req.params.id }, returning: true})
-        .then(
-            rowsDestroyed => rowsDestroyed ? 
-            res.status(204).send('Deleted category successfull!') 
-            : 
-            res.status(404).send({ 
-                success: false, 
-                message: 'This category is not in the list' 
-            })
-        )
-    } catch (error) {
-        res.status(500).send({ 
+  try {
+    await Category.destroy({
+      where: { id: req.params.id },
+      returning: true,
+    }).then((rowsDestroyed) =>
+      rowsDestroyed
+        ? res.status(204).send("Deleted category successfull!")
+        : res.status(404).send({
             success: false,
-            message: error.message
-        })
-    }
-}
+            message: "This category is not in the list",
+          })
+    );
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: error.message,
+    });
+  }
+};
