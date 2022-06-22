@@ -11,7 +11,7 @@ exports.getMembers = async(req, res) => {
                 'image'
             ]
         });
-        res.status(200).json({ allMembers })
+        res.status(200).json( allMembers )
     } catch (error) {
         res.status(500).json({
             success: false, 
