@@ -8,6 +8,12 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+// FUNCTION FOR CREATE A VALID JSON WEB TOKEN
+function generateToken(user, ){
+  //YOU NEED IN YOUR .ENV A SECRET WORD WITH ANY WORD
+  return jwt.sign(user, process.env.SECRET)
+}
+
 
 /************** START JWT LOGIC **************/
 
@@ -23,15 +29,14 @@ router.post("/jwt/auth/login", (req, res) => { // test route //ESTA RUTA SE PISA
     password // req.body by bcrypt?
   }
 
-
+  const accessToken = generateToken(user)
 
   jwt.sign(user, process.env.DB_TOKEN, (err, token) => {
     res.json({
       message: 'Token was generated successfully',
-      token
+      token: accessToken
     });
   });
-
 });
 
 // Verify is in the headers and if is a string.
