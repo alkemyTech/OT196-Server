@@ -17,6 +17,6 @@ exports.login = async function( req, res ){
     const userToken = jwt.sign(userData, process.env.DB_TOKEN, {expiresIn: 43200});
     if (!userToken) return res.status(404).send({ok: false})
 
-    res.status(200).send({user: {id: userExist.id, email: userExist.email, roleId: userExist.roleId, token: userToken}})
+    res.status(200).send({user: {id: userExist.id, email: userExist.email, image: userExist.image, roleId: userExist.roleId, token: userToken}})
 }
     
