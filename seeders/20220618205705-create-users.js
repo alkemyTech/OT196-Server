@@ -2,8 +2,8 @@
 
 const bcrypt = require('bcrypt');
 const USERS_LIST = [
-  { firstName: 'Usuario', lastName: 'Normal', roleId: 1 },
-  { firstName: 'Usuario', lastName: 'Admin', roleId: 2 },
+  { firstName: 'Usuario', lastName: 'Normal', roleId: 2 },
+  { firstName: 'Usuario', lastName: 'Admin', roleId: 1 },
   { firstName: 'Juan', lastName: 'Rodriguez', roleId: 2 },
   { firstName: 'Gerardo', lastName: 'Fernandez', roleId: 1 },
   { firstName: 'Carlos', lastName: 'Gutierrez', roleId: 2 },
