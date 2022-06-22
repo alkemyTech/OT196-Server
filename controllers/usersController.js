@@ -41,6 +41,7 @@ exports.registerUser = async (req, res) => {
     lastName: req.body.lastName,
     email: req.body.email,
     password: passwordHash,
+    roleId: 2
   }).then((user) => res.json(user));
 };
 
