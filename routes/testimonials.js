@@ -9,7 +9,7 @@ const { validateUpdateTestimony } = require("../middlewares/validators/formsVali
 var router = express.Router();
 const { adminValidation } = require("../middlewares/validators/userValidators");
 
-router.get("/1/public", getAllTestimonials);
+router.get("/", getAllTestimonials);
 router.post("/", validateTest, createTestimony);
 router.delete("/:id", adminValidation, deleteTestimony);
 

@@ -7,12 +7,10 @@ exports.getAllTestimonials = async (req, res, next) => {
     // Get data from DB
     const allTestimonials = await Testimony.findAll({
       attributes: [
-        "firstName",
-        "lastName",
-        "image",
-        "phone",
-        "address",
-        "welcomeText",
+        'id',
+        'name',
+        'content',
+        'image'
       ],
     });
 
