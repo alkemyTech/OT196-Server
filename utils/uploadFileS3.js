@@ -26,18 +26,17 @@ const randomKeyGenerator = () => {
 var s3 = new AWS.S3({ apiVersion: "2006-03-01" });
 
 // Upload a file to the bucket. It returns a string with the file's key.
-const uploadFile = async (fileName) => {
-  const fileContent = fs.readFileSync(fileName);
-
+const uploadFile = async (fileData, fileName) => {
+  const file = Buffer.from(fileData.replace(/^data:image\/\w+;base64,/, ""),'base64')
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
-    Key: `${randomKeyGenerator()}-${path.basename(fileName)}`,
-    Body: fileContent,
+    Key: `images/${randomKeyGenerator()}-${fileName}`,
+    ContentEncoding: 'base64',
+    Body: file,
   };
-
   try {
     const stored = await s3.upload(params).promise();
-    return stored.Key;
+    return stored;
   } catch (e) {
     console.log(e);
   }
