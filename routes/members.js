@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { validateMember } = require('../middlewares/validators/membersValidator')
-const { createMember, getMembers, deleteMember } = require('../controllers/membersController')
+const { createMember, getMembers, updateMember deleteMember } = require('../controllers/membersController')
 
 // Endpoint GET members
 router.get('/', getMembers)
@@ -12,5 +12,5 @@ router.delete('/:id', deleteMember);
 //Endpoint POST members
 router.post('/', validateMember , createMember);
 
+router.put('/:id', validateMember, updateMember);
 module.exports = router;
-
