@@ -16,24 +16,6 @@ exports.getAllUsers = async (req, res, next) => {
   }
 };
 
-exports.getLoggedUser = async (req, res) => {
-  let token = req.header.token;
-  await User.find({ token: token }, function (err, userMe) {
-    if (err) {
-      return res.json({
-        success: false,
-        msj: "No se encontró ningún usuario",
-        err,
-      });
-    } else {
-      return res.json({
-        success: true,
-        user: userMe,
-      });
-    }
-  });
-};
-
 exports.registerUser = async (req, res) => {
   let passwordHash = await bcrypt.hash(req.body.password, 10);
   User.create({
@@ -42,7 +24,8 @@ exports.registerUser = async (req, res) => {
     email: req.body.email,
     password: passwordHash,
     roleId: 2,
-    image: 'https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'
+    image:
+      "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
   }).then((user) => res.json(user));
 };
 
