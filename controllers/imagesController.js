@@ -7,6 +7,6 @@ exports.uploadImage = async (req, res, next) => {
         res.send(uploadData.Location)
     }
     catch(e){
-        console.log(e)
+        res.status(500).send({success: false, message: 'No se ha podido subir la imagen.'})
     }
 }
