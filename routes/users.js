@@ -13,9 +13,6 @@ const {
 /* GET users listing. */
 router.get("/", adminValidation, getAllUsers);
 
-// GET logged user data
-router.get("/auth/me", getLoggedUser);
-
 // Register new user
 router.post("/auth/register", validateCreate, registerUser);
 
