@@ -37,3 +37,28 @@ exports.createMember = async(req, res) => {
         })
     }
 }
+
+exports.updateMember = async(req, res)=> {
+    try {
+        const { id } = req.params
+        const { name, image } = req.body
+        const member = await members.update(
+            { name, image },  
+            { where: { id } }
+        )
+        member[0] ? 
+        res.json({
+            success: true,
+            message: 'Miembro actualizado con éxito', 
+    }) : 
+        res.status(404).json({
+            success: false, 
+            message: 'El miembro no existe en la base de datos'
+        })
+    } catch (error) {
+        res.status(500).json(error.message)
+    }
+}
+
+
+
