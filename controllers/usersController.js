@@ -17,6 +17,8 @@ exports.getAllUsers = async (req, res, next) => {
 };
 
 exports.registerUser = async (req, res) => {
+  const userExist = User.findOne({where: {email: req.body.email}})
+  if (userExist) return res.status(500).json({success: false, message: "Ya hay una cuenta registrada con ese correo."})
   let passwordHash = await bcrypt.hash(req.body.password, 10);
   User.create({
     firstName: req.body.firstName,
