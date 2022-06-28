@@ -73,7 +73,7 @@ exports.deleteLoggedUser = async(req,res) =>{
       const userId = res.locals.user.id;
       const deleteUser = await User.destroy({where: {id: userId}})
       if (!deleteUser) return res.status(500).send({success: false, message: 'User not found!'})
-      res.send({success:true, message: 'User data updated successfully!', result: {firstName, lastName, email, image}})
+      res.send({success:true, message: 'User data deleted successfully!'})
     } catch (e) {
       return res.status(500).json({ message: e.message });
     }
