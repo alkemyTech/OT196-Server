@@ -4,6 +4,7 @@ const {
   createTestimony,
   deleteTestimony,
 } = require("../controllers/testimonialsController");
+const { Testimony } = require('../models/index.js')
 const validateTest = require("../controllers/validateTestimony");
 const { validateUpdateTestimony } = require("../middlewares/validators/formsValidator");
 var router = express.Router();
@@ -16,10 +17,10 @@ router.delete("/:id", adminValidation, deleteTestimony);
 //ROUTE AND FUNCTION FOR UPDATE A TESTIMONIAL   
 router.put('/:id', validateUpdateTestimony , async (req, res)=> {
   const { id } = req.params
-  const { name, content } = req.body 
+  const { name, content, image } = req.body 
   try {
     const testimonyUpdate = await Testimony.update(
-      { name: name, content: content }, 
+      { name: name, content: content, image: image || '' }, 
       { where: { id: id } },          
     )
     testimonyUpdate[0] !== 0 ? res.send(req.body) : 
