@@ -26,6 +26,7 @@ exports.createTestimony = (req, res) => {
     Testimony.create({
       name: req.body.name,
       content: req.body.content,
+      image: req.body.image
     }).then((result) => res.json(result));
   } catch (error) {
     return res.status(500).json({ message: error.message });
