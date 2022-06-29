@@ -1,5 +1,6 @@
 // Add User's Model
 const { User } = require("../models/index");
+const {sendEmail} = require("../utils/emailSender")
 
 var bcrypt = require("bcrypt");
 
@@ -28,7 +29,11 @@ exports.registerUser = async (req, res) => {
     roleId: 2,
     image:
       "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
-  }).then((user) => res.json(user));
+  }).then(
+    (user) => {
+      sendEmail({name: req.body.firstName, email: req.body.email}, "register")
+      res.json(user)
+    });
 };
 
 exports.deleteUser = async (req, res) => {
