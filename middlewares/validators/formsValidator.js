@@ -102,3 +102,25 @@ exports.validateUpdateTestimony = [
     next()
   }
 ]
+
+exports.validateUpdateUser = [
+  check("firstName").notEmpty(),
+  check("lastName").notEmpty(),
+  check("email").notEmpty().isEmail(),
+  check("image").notEmpty().isURL(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(422).json({success: false, message: "Incorrect body data."});
+    next();
+  },
+];
+
+exports.validateImage = [
+  check("name").notEmpty(),
+  check("image").notEmpty().custom((value) => isBase64Image(value)),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(422).json({success: false, message: "Incorrect body data."});
+    next();
+  },
+];
