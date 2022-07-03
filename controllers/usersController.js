@@ -26,7 +26,7 @@ exports.registerUser = async (req, res) => {
     roleId: 2,
     image:
       "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
-  }).then((user) => res.json(user));
+  }).then((user) => res.status(200).json(user));
 };
 
 exports.deleteUser = async (req, res) => {
@@ -35,9 +35,15 @@ exports.deleteUser = async (req, res) => {
     await User.destroy({
       where: { id },
     });
-    res.send("The user has been deleted correctly");
+    res.status(200).send({
+      success: true,
+      message: "The user has been deleted correctly",
+    });
   } catch (error) {
-    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: e.message,
+    });
   }
 };
 
