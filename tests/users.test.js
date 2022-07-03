@@ -12,6 +12,17 @@ const testAdmin = {
   password: "almada",
 };
 
+const logUser = async (user) => {
+  return await request(app)
+    .post("/auth/login")
+    .send({
+      email: user.email,
+      password: user.password,
+    })
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+};
+
 describe("GET /users", () => {
   test("Fails: user not logged in", async () => {
     await request(app).get("/users").expect(401);
@@ -19,14 +30,7 @@ describe("GET /users", () => {
 
   describe("If user is logged in", () => {
     test("Fails: user is not an admin", async () => {
-      const loggedUser = await request(app)
-        .post("/auth/login")
-        .send({
-          email: testUser.email,
-          password: testUser.password,
-        })
-        .expect(200)
-        .expect("Content-Type", /application\/json/);
+      const loggedUser = await logUser(testUser);
 
       await request(app)
         .get("/users")
@@ -35,14 +39,7 @@ describe("GET /users", () => {
     }, 100000);
 
     test("Succeeds: user is admin", async () => {
-      const loggedUser = await request(app)
-        .post("/auth/login")
-        .send({
-          email: testAdmin.email,
-          password: testAdmin.password,
-        })
-        .expect(200)
-        .expect("Content-Type", /application\/json/);
+      const loggedUser = await logUser(testAdmin);
 
       await request(app)
         .get("/users")
@@ -60,14 +57,7 @@ describe("DELETE /users/:id", () => {
 
   describe("If user is logged in", () => {
     test("Fails: user is not an admin", async () => {
-      const loggedUser = await request(app)
-        .post("/auth/login")
-        .send({
-          email: testUser.email,
-          password: testUser.password,
-        })
-        .expect(200)
-        .expect("Content-Type", /application\/json/);
+      const loggedUser = await logUser(testUser);
 
       await request(app)
         .delete(`/users/1`)
@@ -79,14 +69,7 @@ describe("DELETE /users/:id", () => {
       test("Fails: id is not valid", async () => {
         const invalidId = "12jhhj31231";
 
-        const loggedUser = await request(app)
-          .post("/auth/login")
-          .send({
-            email: testAdmin.email,
-            password: testAdmin.password,
-          })
-          .expect(200)
-          .expect("Content-Type", /application\/json/);
+        const loggedUser = await logUser(testAdmin);
 
         await request(app)
           .delete(`/users/${invalidId}`)
@@ -109,14 +92,7 @@ describe("DELETE /users/:id", () => {
           .expect(200)
           .expect("Content-Type", /application\/json/);
 
-        const loggedUser = await request(app)
-          .post("/auth/login")
-          .send({
-            email: testAdmin.email,
-            password: testAdmin.password,
-          })
-          .expect(200)
-          .expect("Content-Type", /application\/json/);
+        const loggedUser = await logUser(testAdmin);
 
         const userToDelete = await User.findOne({
           where: { email: testNewUser.email },
@@ -139,14 +115,7 @@ describe("PUT /users/:id", () => {
 
   describe("If user is logged in", () => {
     test("Fails: user is not an admin", async () => {
-      const loggedUser = await request(app)
-        .post("/auth/login")
-        .send({
-          email: testUser.email,
-          password: testUser.password,
-        })
-        .expect(200)
-        .expect("Content-Type", /application\/json/);
+      const loggedUser = await logUser(testUser);
 
       await request(app)
         .delete(`/users/1`)
@@ -158,14 +127,7 @@ describe("PUT /users/:id", () => {
       test("Fails: id is not valid", async () => {
         const invalidId = "12jhhj31231";
 
-        const loggedUser = await request(app)
-          .post("/auth/login")
-          .send({
-            email: testAdmin.email,
-            password: testAdmin.password,
-          })
-          .expect(200)
-          .expect("Content-Type", /application\/json/);
+        const loggedUser = await logUser(testAdmin);
 
         await request(app)
           .delete(`/users/${invalidId}`)
@@ -195,14 +157,7 @@ describe("PUT /users/:id", () => {
           .expect(200)
           .expect("Content-Type", /application\/json/);
 
-        const loggedUser = await request(app)
-          .post("/auth/login")
-          .send({
-            email: testAdmin.email,
-            password: testAdmin.password,
-          })
-          .expect(200)
-          .expect("Content-Type", /application\/json/);
+        const loggedUser = await logUser(testAdmin);
 
         const userToUpdate = await User.findOne({
           where: { email: testNewUser.email },
