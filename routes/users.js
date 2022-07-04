@@ -1,6 +1,10 @@
 var express = require("express");
 var router = express.Router();
-const { validateCreate, validateId } = require("../controllers/userValidator");
+const {
+  validateCreate,
+  validateId,
+  validateEmail,
+} = require("../controllers/userValidator");
 const { adminValidation } = require("../middlewares/validators/userValidators");
 const {
   getAllUsers,
@@ -19,6 +23,6 @@ router.post("/auth/register", validateCreate, registerUser);
 router.delete("/:id", adminValidation, validateId, deleteUser);
 
 // Update user
-router.put("/:id", adminValidation, validateId, updateUser);
+router.put("/:id", adminValidation, validateId, validateEmail, updateUser);
 
 module.exports = router;

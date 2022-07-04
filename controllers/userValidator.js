@@ -1,3 +1,4 @@
+const e = require("express");
 const { check, validationResult } = require("express-validator");
 
 const validateCreate = [
@@ -5,6 +6,19 @@ const validateCreate = [
   check("lastName").exists().not().isEmpty(),
   check("email").exists().isEmail(),
   check("password").exists().not().isEmpty(),
+  (req, res, next) => {
+    try {
+      validationResult(req).throw();
+      return next();
+    } catch (err) {
+      res.status(403);
+      res.send({ errors: err.array() });
+    }
+  },
+];
+
+const validateEmail = [
+  check("email").exists().bail().isEmail(),
   (req, res, next) => {
     try {
       validationResult(req).throw();
@@ -29,4 +43,4 @@ const validateId = [
   },
 ];
 
-module.exports = { validateCreate, validateId };
+module.exports = { validateCreate, validateId, validateEmail };
