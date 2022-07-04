@@ -6,7 +6,7 @@ formatMessage.setup({ missingTranslation: "ignore" });
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Set EMAIL SENDER validated on SENDGRID
-const emailSender = "";
+const emailSender = "zeque-mati@hotmail.com";
 
 const emailTemplates = {
   ["default"]: {
@@ -40,12 +40,10 @@ exports.sendEmail = async function (mailData, type) {
     subject: subject,
     html: html,
   };
-  sgMail
-    .send(msg)
-    .then(() => {
-      console.log(`Email sent to ${mailData.email} from ${emailSender}`);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+  try {
+    await sgMail.send(msg);
+    console.log(`Email sent to ${mailData.email} from ${emailSender}`);
+  } catch (error) {
+    console.error(e);
+  }
 };

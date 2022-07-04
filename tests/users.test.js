@@ -196,8 +196,6 @@ describe("PUT /users/:id", () => {
             roleId: 2,
           };
 
-          await testRequest("post", "/users/auth/register", 200, testNewUser);
-
           const loggedUser = await logUser(testAdmin);
 
           const userToUpdate = await User.findOne({

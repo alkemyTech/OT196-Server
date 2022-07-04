@@ -20,14 +20,12 @@ exports.getAllUsers = async (req, res, next) => {
 exports.registerUser = async (req, res) => {
   const userExist = await User.findOne({ where: { email: req.body.email } });
   if (userExist)
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: "Ya hay una cuenta registrada con ese correo.",
-      });
+    return res.status(500).json({
+      success: false,
+      message: "Ya hay una cuenta registrada con ese correo.",
+    });
   let passwordHash = await bcrypt.hash(req.body.password, 10);
-  User.create({
+  const user = await User.create({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
@@ -35,10 +33,13 @@ exports.registerUser = async (req, res) => {
     roleId: 2,
     image:
       "https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
-  }).then((user) => {
-    sendEmail({ name: req.body.firstName, email: req.body.email }, "register");
-    res.status(200).json(user);
   });
+
+  await sendEmail(
+    { name: req.body.firstName, email: req.body.email },
+    "register"
+  );
+  res.status(200).json(user);
 };
 
 exports.deleteUser = async (req, res) => {
