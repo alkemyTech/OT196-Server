@@ -12,57 +12,75 @@ const testAdmin = {
   password: "almada",
 };
 
-const logUser = async (user) => {
-  return await request(app)
-    .post("/auth/login")
-    .send({
-      email: user.email,
-      password: user.password,
-    })
-    .expect(200)
+const testRequest = (method, route, statusExpected, body = {}, token = "") => {
+  let testReq = request(app);
+  switch (method) {
+    case "post":
+      testReq = testReq.post(route).send(body);
+      break;
+    case "delete":
+      testReq = testReq.delete(route).send(body);
+      break;
+    case "put":
+      testReq = testReq.put(route).send(body);
+      break;
+    default:
+      testReq = testReq.get(route);
+      break;
+  }
+
+  if (token) {
+    testReq = testReq.set("Authorization", `Bearer ${token}`);
+  }
+  return testReq
+    .expect(statusExpected)
     .expect("Content-Type", /application\/json/);
+};
+
+const logUser = async (user) => {
+  const requestLog = await testRequest("post", "/auth/login", 200, {
+    email: user.email,
+    password: user.password,
+  });
+  return requestLog;
 };
 
 describe("GET /users", () => {
   test("Fails: user not logged in", async () => {
-    await request(app).get("/users").expect(401);
+    await testRequest("get", "/users", 401);
   }, 100000);
 
   describe("If user is logged in", () => {
     test("Fails: user is not an admin", async () => {
       const loggedUser = await logUser(testUser);
 
-      await request(app)
-        .get("/users")
-        .set("Authorization", `Bearer ${loggedUser.body.user.token}`)
-        .expect(403);
+      await testRequest("get", "/users", 403, {}, loggedUser.body.user.token);
     }, 100000);
 
     test("Succeeds: user is admin", async () => {
       const loggedUser = await logUser(testAdmin);
 
-      await request(app)
-        .get("/users")
-        .set("Authorization", `Bearer ${loggedUser.body.user.token}`)
-        .expect(200)
-        .expect("Content-Type", /application\/json/);
+      await testRequest("get", "/users", 200, {}, loggedUser.body.user.token);
     }, 100000);
   });
 });
 
 describe("DELETE /users/:id", () => {
   test("Fails: user is not logged in", async () => {
-    await request(app).delete("/users/1").expect(401);
+    await testRequest("delete", "/users/1", 401);
   }, 100000);
 
   describe("If user is logged in", () => {
     test("Fails: user is not an admin", async () => {
       const loggedUser = await logUser(testUser);
 
-      await request(app)
-        .delete(`/users/1`)
-        .set("Authorization", `Bearer ${loggedUser.body.user.token}`)
-        .expect(403);
+      await testRequest(
+        "delete",
+        "/users/1",
+        403,
+        {},
+        loggedUser.body.user.token
+      );
     }, 100000);
 
     describe("If user is admin", () => {
@@ -71,10 +89,13 @@ describe("DELETE /users/:id", () => {
 
         const loggedUser = await logUser(testAdmin);
 
-        await request(app)
-          .delete(`/users/${invalidId}`)
-          .set("Authorization", `Bearer ${loggedUser.body.user.token}`)
-          .expect(403);
+        await testRequest(
+          "delete",
+          `/users/${invalidId}`,
+          403,
+          {},
+          loggedUser.body.user.token
+        );
       }, 100000);
 
       test("Success: id is valid", async () => {
@@ -86,11 +107,7 @@ describe("DELETE /users/:id", () => {
           roleId: 2,
         };
 
-        await request(app)
-          .post("/users/auth/register")
-          .send(testNewUser)
-          .expect(200)
-          .expect("Content-Type", /application\/json/);
+        await testRequest("post", "/users/auth/register", 200, testNewUser);
 
         const loggedUser = await logUser(testAdmin);
 
@@ -98,11 +115,13 @@ describe("DELETE /users/:id", () => {
           where: { email: testNewUser.email },
         });
 
-        await request(app)
-          .delete(`/users/${userToDelete.id}`)
-          .set("Authorization", `Bearer ${loggedUser.body.user.token}`)
-          .expect(200)
-          .expect("Content-Type", /application\/json/);
+        await testRequest(
+          "delete",
+          `/users/${userToDelete.id}`,
+          200,
+          {},
+          loggedUser.body.user.token
+        );
       }, 100000);
     });
   });
@@ -110,17 +129,14 @@ describe("DELETE /users/:id", () => {
 
 describe("PUT /users/:id", () => {
   test("Fails: user is not logged in", async () => {
-    await request(app).put("/users/1").expect(401);
+    await testRequest("put", "/users/1", 401);
   }, 100000);
 
   describe("If user is logged in", () => {
     test("Fails: user is not an admin", async () => {
       const loggedUser = await logUser(testUser);
 
-      await request(app)
-        .delete(`/users/1`)
-        .set("Authorization", `Bearer ${loggedUser.body.user.token}`)
-        .expect(403);
+      await testRequest("put", "/users/1", 403, {}, loggedUser.body.user.token);
     }, 100000);
 
     describe("If user is admin", () => {
@@ -129,47 +145,80 @@ describe("PUT /users/:id", () => {
 
         const loggedUser = await logUser(testAdmin);
 
-        await request(app)
-          .delete(`/users/${invalidId}`)
-          .set("Authorization", `Bearer ${loggedUser.body.user.token}`)
-          .expect(403);
+        await testRequest(
+          "put",
+          `/users/${invalidId}`,
+          403,
+          {},
+          loggedUser.body.user.token
+        );
       }, 100000);
 
-      test("Success: id is valid", async () => {
-        const testNewUser = {
-          firstName: "Will Be",
-          lastName: "Updated",
-          email: "willbeupdated@mail.com",
-          password: "willbeupdated",
-          roleId: 2,
-        };
+      describe("If id is valid", () => {
+        test("Fails: email is not valid", async () => {
+          const testNewUser = {
+            firstName: "Will Be",
+            lastName: "Updated",
+            email: "willbeupdated@mail.com",
+            password: "willbeupdated",
+            roleId: 2,
+          };
 
-        const updates = {
-          firstName: "Updated",
-          lastName: "User",
-          email: "updated@mail.com",
-          password: "updated",
-        };
+          await testRequest("post", "/users/auth/register", 200, testNewUser);
 
-        await request(app)
-          .post("/users/auth/register")
-          .send(testNewUser)
-          .expect(200)
-          .expect("Content-Type", /application\/json/);
+          const loggedUser = await logUser(testAdmin);
 
-        const loggedUser = await logUser(testAdmin);
+          const userToUpdate = await User.findOne({
+            where: { email: testNewUser.email },
+          });
 
-        const userToUpdate = await User.findOne({
-          where: { email: testNewUser.email },
-        });
+          const notValidUpdate = {
+            firstName: "Test",
+            lastName: "Lastname",
+            email: "notValid",
+          };
 
-        await request(app)
-          .delete(`/users/${userToUpdate.id}`)
-          .set("Authorization", `Bearer ${loggedUser.body.user.token}`)
-          .send(updates)
-          .expect(200)
-          .expect("Content-Type", /application\/json/);
-      }, 100000);
+          await testRequest(
+            "put",
+            `/users/${userToUpdate.id}`,
+            403,
+            notValidUpdate,
+            loggedUser.body.user.token
+          );
+        }, 100000);
+
+        test("Succeeds: email is valid", async () => {
+          const testNewUser = {
+            firstName: "Will Be",
+            lastName: "Updated",
+            email: "willbeupdated@mail.com",
+            password: "willbeupdated",
+            roleId: 2,
+          };
+
+          await testRequest("post", "/users/auth/register", 200, testNewUser);
+
+          const loggedUser = await logUser(testAdmin);
+
+          const userToUpdate = await User.findOne({
+            where: { email: testNewUser.email },
+          });
+
+          const validUpdate = {
+            firstName: "Test",
+            lastName: "Lastname",
+            email: "valid@email.com",
+          };
+
+          await testRequest(
+            "put",
+            `/users/${userToUpdate.id}`,
+            200,
+            validUpdate,
+            loggedUser.body.user.token
+          );
+        }, 100000);
+      });
     });
   });
 });
