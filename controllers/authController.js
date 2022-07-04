@@ -40,7 +40,6 @@ exports.getLoggedUser = async (req, res) => {
     return err ? false : suc;
   });
   try {
-    console.log(User);
     const user = await User.findByPk(token.id, {
       attributes: ["id", "firstName", "lastName", "email", "image"],
     });
@@ -49,3 +48,33 @@ exports.getLoggedUser = async (req, res) => {
     return res.status(500).json({ message: e.message });
   }
 };
+
+exports.updateLoggedUser = async (req, res) => {
+  try {
+    const userId = res.locals.user.id;
+    const { firstName, lastName, email, image } = req.body;
+    await User.update({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      image: image,
+    },
+    {where: {
+      id: userId
+    }});
+    res.send({success:true, message: 'User data updated successfully!', result: {firstName, lastName, email, image}})
+  } catch (e) {
+    return res.status(500).json({ message: e.message });
+  }
+};
+
+exports.deleteLoggedUser = async(req,res) =>{
+    try {
+      const userId = res.locals.user.id;
+      const deleteUser = await User.destroy({where: {id: userId}})
+      if (!deleteUser) return res.status(500).send({success: false, message: 'User not found!'})
+      res.send({success:true, message: 'User data deleted successfully!'})
+    } catch (e) {
+      return res.status(500).json({ message: e.message });
+    }
+}

@@ -16,6 +16,7 @@ const activitiesRouter = require("./routes/activities");
 const contactsRouter = require("./routes/contacts");
 const categoriesRouter = require("./routes/categories");
 const membersRouter = require('./routes/members');
+const imagesRouter = require('./routes/images');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.set("view engine", "ejs");
 
 app.use("/activities", activitiesRouter);
 app.use('/news', newsRouter);
+app.use('/images', imagesRouter);
 
 app.use(logger("dev"));
 app.use(express.json());
