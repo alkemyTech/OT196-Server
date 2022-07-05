@@ -47,6 +47,10 @@ describe("update member", ()=> {
       const member = {
             name: 'juanito', 
             image: 'Image of Juanito'
+        } 
+        const failMember = {
+            name: null, 
+            image: null 
         }
     test("Should return with status 200 if the id exist and update the member", async ()=> {      
         const response = await request(app).put("/members/24").send(member)
@@ -55,6 +59,22 @@ describe("update member", ()=> {
     test("Should return with a message if the user has been updated", async ()=> {
         const response = await request(app).put("/members/25").send(member)
         expect(response.body).toEqual({"message": "Miembro actualizado con éxito", "success": true})
+    })
+    test("Should return with an error if name is null", async ()=> {
+        const response = await request(app).put("/members/45").send(failMember)
+        expect(response.body).toEqual({ "errors": [
+            {
+                "value": null,
+                "msg": "Invalid value",
+                "param": "name",
+                "location": "body"
+            }, { 
+            "location": "body", 
+            "msg": "Invalid value",
+            "param": "name",
+            "value": null,
+        }
+        ]})
     })
     test("Should return with a status 400 if the id does not exist", async ()=> {
         const response = await request(app).put("/members/12500").send()
@@ -70,14 +90,14 @@ describe("update member", ()=> {
 //FOR ENDOINT DELETE MEMBER (DELETE)
 describe("delete member", ()=> {
     test("Should return with status 200 if the id exist", async ()=> {
-        const response = await request(app).delete("/members/8").send()
+        const response = await request(app).delete("/members/9").send()
         expect(response.statusCode).toBe(200)
     })
     test("Should return with a message if the user has been deleted", async ()=> {
-        const response = await request(app).delete("/members/46").send()
+        const response = await request(app).delete("/members/49").send()
         expect(response.body).toEqual({'message': '¡Miembro eliminado con éxito!'})
     })
-    test("Should return with status 404 if the id doesn't exist", async( )=> {
+    test("Should return with status 404 if the id doesn't exist", async()=> {
         const response = await request(app).delete("/members/1285").send()
         expect(response.statusCode).toBe(404)
     })
