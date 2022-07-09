@@ -60,14 +60,14 @@ router.get('/:id', async (req, res)=> {
 
 // DELETE SINGLE NEWS BY ID
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', adminValidation, async (req, res) => {
     const { id } = req.params
     const entryToDestroy = await Entry.destroy({
         where: { id },
     })
     // Validate if the entry exists
     if (entryToDestroy) {
-        res.status(200).send( `News ${id} deleted` )
+        res.status(200).send( `News ${id} deleted`)
     } else {
         return res.status(404).json({
             success: false,
