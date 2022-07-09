@@ -10,31 +10,38 @@ const correctData = {
   image:
     "https://alkemy196.s3.sa-east-1.amazonaws.com/images/np7-whj-2x4x-image-placeholder.jpg",
 };
+const newData = {
+  name: "News Title Modified",
+  content: "News Content",
+  categoryId: 1,
+  image:
+    "https://alkemy196.s3.sa-east-1.amazonaws.com/images/np7-whj-2x4x-image-placeholder.jpg",
+};
 const incorrectData = {
-  withoutName: {
+  'Without name': {
     content: "News Content",
     categoryId: 1,
     image:
       "https://alkemy196.s3.sa-east-1.amazonaws.com/images/np7-whj-2x4x-image-placeholder.jpg",
   },
-  withoutContent: {
+  'Without content': {
     name: "News Title",
     categoryId: 1,
     image:
       "https://alkemy196.s3.sa-east-1.amazonaws.com/images/np7-whj-2x4x-image-placeholder.jpg",
   },
-  withoutImage: {
+  'Without image': {
     name: "News Title",
     content: "News Content",
     categoryId: 1,
   },
-  withoutCategory: {
+  'Without category': {
     name: "News Title",
     content: "News Content",
     image:
     "https://alkemy196.s3.sa-east-1.amazonaws.com/images/np7-whj-2x4x-image-placeholder.jpg",
   },
-  empty: {}
+  Empty: {}
 };
 
 
@@ -47,15 +54,7 @@ describe('NEWS ENDPOINT', () => {
         token = `Bearer ${res.body.user.token}`
     });
 
-    describe('GET /news', () => {
-
-        test('Successfully get news list', async () => {
-            await request(app).get('/news')
-            .expect('Content-Type', /json/).expect(200)
-        })
-    
-    })
-    
+ 
     describe("POST /news", () => {
 
       Object.keys(incorrectData).forEach((e) => {
@@ -85,12 +84,29 @@ describe('NEWS ENDPOINT', () => {
 
     }); 
 
+    describe('GET /news', () => {
+
+        test('Successfully get news list', async () => {
+            await request(app).get('/news')
+            .expect('Content-Type', /json/).expect(200)
+        })
+        test('Success get news by ID', async () => {
+            await request(app).get(`/news/${newPost.id}`)
+            .expect('Content-Type', /json/).expect(200)
+        })
+        test('Fail get news by ID (Non-existent ID)', async () => {
+            await request(app).get(`/news/${newPost.id+1}`)
+            .expect('Content-Type', /json/).expect(404)
+        })
+    
+    })
+
     describe("PUT /news", () => {
 
       Object.keys(incorrectData).forEach((e) => {
-        test(`Failed post news (Error: ${e})`, async () => {
+        test(`Failed update news (Error: ${e})`, async () => {
           await request(app)
-            .post("/news")
+            .put(`/news/${newPost.id}`)
             .send(incorrectData[e])
             .set("Authorization", token)
             .expect("Content-Type", /json/)
@@ -98,18 +114,21 @@ describe('NEWS ENDPOINT', () => {
         });
       });
 
-      test("Successfully post news", async () => {
+      test("Successfully update news", async () => {
         const data = await request(app)
-          .post("/news")
-          .send(correctData)
+          .put(`/news/${newPost.id}`)
+          .send(newData)
           .set("Authorization", token)
-          .expect("Content-Type", /json/)
+          .expect("Content-Type", /text/)
           .expect(200);
-        newPost = data.body.createdNew
       });
 
-      test("Failed post news (Admin token required)", async () => {
-        await request(app).post("/news").send(correctData).expect(401);
+      test("Failed update news (Invalid id)", async () => {
+        await request(app).put(`/news/${newPost.id+1}`).send(correctData).set("Authorization", token).expect(404);
+      });
+
+      test("Failed update news (Admin token required)", async () => {
+        await request(app).put(`/news/${newPost.id}`).send(correctData).expect(401);
       });
 
     }); 
