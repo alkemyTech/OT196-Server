@@ -15,7 +15,7 @@ exports.UpdateNews = async function (req, res) {
         type
     },{ returning: true, where: { id: idNews } })
     // Validate if element exists
-    if (ModifyNew === null || ModifyNew === 0) {
+    if (ModifyNew === null || ModifyNew[1] === 0) {
         return res.status(404).json({
             success: false,
             msj: 'No se encontró ninguna noticia',       
