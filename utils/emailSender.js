@@ -40,12 +40,10 @@ exports.sendEmail = async function (mailData, type) {
     subject: subject,
     html: html,
   };
-  sgMail
-    .send(msg)
-    .then(() => {
-      console.log(`Email sent to ${mailData.email} from ${emailSender}`);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
+  try {
+    await sgMail.send(msg);
+    console.log(`Email sent to ${mailData.email} from ${emailSender}`);
+  } catch (error) {
+    console.error(e);
+  }
 };
