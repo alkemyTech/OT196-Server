@@ -11,7 +11,7 @@ router.use(express.json())
 router.use(express.urlencoded({extended: false}))
 
 /*-- PUT NEWS --*/
-router.put('/:idNews', validateNewsPost, UpdateNews);
+router.put('/:idNews', adminValidation, validateNewsPost, UpdateNews);
 
 //More endpoints with default limit
 /*-- GET NEWS --*/
