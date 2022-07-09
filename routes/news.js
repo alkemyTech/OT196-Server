@@ -51,6 +51,11 @@ router.get('/:id', async (req, res)=> {
             'content'
         ],
     })
+    if (response === null)
+      return res.status(404).json({
+        success: false,
+        msj: "No se encontró ninguna noticia",
+    });
     res.send(response)
     } catch (error) {
         res.status(404).send(error)
