@@ -46,7 +46,7 @@ exports.validateNewsPost = [
     .bail(),
   check('image')
     .notEmpty()
-    .custom((value) => isBase64Image(value))
+    .isURL()
     .bail(),
   check('content').isLength({ max: 5000 })
     .notEmpty()
