@@ -86,6 +86,12 @@ describe('PUT /testimonials', () => {
 
     //Should respond with 422 status code
     test('Should respond with 422 status code', async () => {
+        const response = await request(app).put('/testimonials/1').send(badTestimony);
+        expect(response.statusCode).toBe(422);
+    })
+
+    //Should respond with 422 status code
+    test('Should respond with 422 status code', async () => {
         const response = await request(app).put('/testimonials/1').send();
         expect(response.statusCode).toBe(422);
     })
@@ -109,14 +115,14 @@ describe('DELETE /testimonials', () => {
         //Should respond with a 200 status code
         test("should respond with a 200 status code", async() => {
             const User = await userAdminLogged();
-            const response = await request(app).delete('/testimonials/9').send().set('Authorization',`Bearer ${User.body.user.token}`)
+            const response = await request(app).delete('/testimonials/23').send().set('Authorization',`Bearer ${User.body.user.token}`)
             expect(response.statusCode).toBe(200);
         })
 
         //Should respond with a success message
         test("should respond with a success message", async() => {
             const User = await userAdminLogged();
-            const response = await request(app).delete('/testimonials/10').send().set('Authorization',`Bearer ${User.body.user.token}`)
+            const response = await request(app).delete('/testimonials/24').send().set('Authorization',`Bearer ${User.body.user.token}`)
             expect(response.body).toEqual({
                 success: true,
                 message: "The testimony has been deleted.",
