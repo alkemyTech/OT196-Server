@@ -1,10 +1,13 @@
 var express = require("express");
 var router = express.Router();
-const validateCreate = require("../controllers/userValidator");
+const {
+  validateCreate,
+  validateId,
+  validateEmail,
+} = require("../controllers/userValidator");
 const { adminValidation } = require("../middlewares/validators/userValidators");
 const {
   getAllUsers,
-  getLoggedUser,
   registerUser,
   deleteUser,
   updateUser,
@@ -17,9 +20,9 @@ router.get("/", adminValidation, getAllUsers);
 router.post("/auth/register", validateCreate, registerUser);
 
 // Delete user
-router.delete("/:id", deleteUser);
+router.delete("/:id", adminValidation, validateId, deleteUser);
 
 // Update user
-router.put("/:id", adminValidation, updateUser);
+router.put("/:id", adminValidation, validateId, validateEmail, updateUser);
 
 module.exports = router;
