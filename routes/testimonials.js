@@ -8,6 +8,7 @@ const validateTest = require("../controllers/validateTestimony");
 const { validateUpdateTestimony } = require("../middlewares/validators/formsValidator");
 var router = express.Router();
 const { adminValidation } = require("../middlewares/validators/userValidators");
+const { Testimony } = require('../models/index');
 
 router.get("/", getAllTestimonials);
 router.post("/", validateTest, createTestimony);
